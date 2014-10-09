@@ -13,6 +13,7 @@ defmodule PhMicroblog.Views do
   end
 
   # Functions defined here are available to all other views/templates
+  def title(nil),  do: "PH Microblog"
+  def title(name), do: "#{name} | PH Microblog"
+
 end
-
-
