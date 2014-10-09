@@ -5,9 +5,10 @@ defmodule PhMicroblog.Router do
     # Use the default browser stack.
     pipe_through :browser
 
-    get "/static_pages/home",  PhMicroblog.StaticPageController, :home,  as: :home
-    get "/static_pages/help",  PhMicroblog.StaticPageController, :help,  as: :help
-    get "/static_pages/about", PhMicroblog.StaticPageController, :about, as: :about
+    get "/static_pages/home",    PhMicroblog.StaticPageController, :home,    as: :static_page
+    get "/static_pages/help",    PhMicroblog.StaticPageController, :help,    as: :static_page
+    get "/static_pages/about",   PhMicroblog.StaticPageController, :about,   as: :static_page
+    get "/static_pages/contact", PhMicroblog.StaticPageController, :contact, as: :static_page
   end
 
   # Other scopes may use custom stacks.
