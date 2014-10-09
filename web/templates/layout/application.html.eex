@@ -9,20 +9,16 @@
 
     <title><%= title(@title) %></title>
     <link rel="stylesheet" href="/css/phoenix.css">
+    <link rel="stylesheet" href="/css/style.css">
   </head>
 
   <body>
-    <div class="container">
-      <div class="header">
-        <ul class="nav nav-pills pull-right">
-        </ul>
-      </div>
+    <%= render "header.html" %>
 
+    <div class="container">
       <%= @inner %>
 
-      <div class="footer">
-      </div>
-
-    </div> <!-- /container -->
+      <%= render "footer.html" %>
+    </div>
   </body>
 </html>
