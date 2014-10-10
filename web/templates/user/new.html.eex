@@ -1,0 +1,3 @@
+<h1>Sign up</h1>
+
+<%= render "_form.html", action: user_path(:create) %>
