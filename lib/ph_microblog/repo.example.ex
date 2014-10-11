@@ -1,3 +1,4 @@
+"""
 defmodule PhMicroblog.Repo do
   use Ecto.Repo, adapter: Ecto.Adapters.Postgres, env: Mix.env
 
@@ -21,3 +22,4 @@ defmodule PhMicroblog.Repo do
     app_dir(:ph_microblog, "priv/repo")
   end
 end
+"""

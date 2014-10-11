@@ -15,14 +15,21 @@ defmodule PhMicroblog.Mixfile do
   # Type `mix help compile.app` for more information
   def application do
     [mod: {PhMicroblog, []},
-     applications: [:phoenix, :cowboy, :logger]]
+     applications: [:phoenix, :cowboy, :postgrex, :ecto, :bcrypt, :logger]]
   end
 
   # Specifies your project dependencies
   #
   # Type `mix help deps` for examples and options
   defp deps do
-    [{:phoenix, github: "phoenixframework/phoenix"},
-     {:cowboy, "~> 1.0"}]
+    [
+      {:phoenix, github: "phoenixframework/phoenix"},
+      {:cowboy, "~> 1.0"},
+      {:postgrex, ">= 0.6.0"},
+      {:ecto, "~> 0.2.2"},
+
+      {:bcrypt, github: "opscode/erlang-bcrypt", tag: "0.5.0.3"},
+      {:amrita, github: "josephwilk/amrita"}
+    ]
   end
 end
