@@ -1,0 +1,4 @@
+<h1>Edit User</h1>
+
+<%= render "_form.html", action: user_path(:update, 1),
+                         method: "PATCH" %>
