@@ -12,7 +12,7 @@ To start this application:
   * `lib/ph_microblog/repo.example.ex` to `lib/ph_microblog/repo.ex`
   * `config/prod.example.exs` to `config/prod.exs`
 4. Migrate with `mix ecto.migrate PhMicroblog.Repo`
-5. Execute `mix amrita` and confirm it's green
+5. Execute `mix test` and confirm it's green
 6. Start Phoenix router with `mix phoenix.start`
 7. Visit `localhost:4567`
 
