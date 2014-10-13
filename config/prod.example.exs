@@ -12,9 +12,9 @@ use Mix.Config
 # disk for the key and cert.
 
 config :phoenix, PhMicroblog.Router,
-  port: System.get_env("PORT"),
-  ssl: false,
-  host: "example.com",
+  url: [host: "example.com"],
+  http: [port: System.get_env("PORT")],
+  https: false,
   secret_key_base: "****************************************************************************************"
 
 config :logger, :console,

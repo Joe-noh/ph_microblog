@@ -1,14 +1,11 @@
 use Mix.Config
 
 config :phoenix, PhMicroblog.Router,
-  port: System.get_env("PORT") || 4567,
-  ssl: false,
-  host: "localhost",
-  session_key: "ph_microblog",
+  http: [port: System.get_env("PORT") || 4000],
   debug_errors: true
 
 # Enables code reloading for development
-config :phoenix, :code_reloader, false
+config :phoenix, :code_reloader, true
 
 config :bcrypt,
   default_log_rounds: 4

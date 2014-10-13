@@ -3,7 +3,7 @@ defmodule PhMicroblog.UserController do
 
   alias Phoenix.Controller.Flash
   alias PhMicroblog.User
-  alias PhMicroblog.Router.Helper, as: Router
+  alias PhMicroblog.Router.Helpers, as: Router
 
   plug :action
 
@@ -13,7 +13,7 @@ defmodule PhMicroblog.UserController do
   end
 
   def edit(conn, %{"id" => id}) do
-    user = User.find(id)
+    user = User.find_by(:id, id)
     render conn, "edit", user: user
   end
 
@@ -22,7 +22,7 @@ defmodule PhMicroblog.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    user = User.find(id)
+    user = User.find_by(:id, id)
     render conn, "show", user: user
   end
 
