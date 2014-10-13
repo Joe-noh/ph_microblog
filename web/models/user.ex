@@ -35,7 +35,7 @@ defmodule PhMicroblog.User do
   end
 
   def authenticate(name, pass) do
-    case User.find(name) do
+    case User.find_by(:name, name) do
       nil  -> nil
       user ->
         {:ok, digest} = :bcrypt.hashpw(pass, String.to_char_list(user.digest))
@@ -46,11 +46,15 @@ defmodule PhMicroblog.User do
 
   def new, do: %User{}
 
-  def find(id) when is_integer(id) do
+  def find_by(:id, id) when is_integer(id) do
     Repo.get(User, id)
   end
 
-  def find(name) when is_binary(name) do
+  def find_by(:id, id) when is_binary(id) do
+    Repo.get(User, String.to_integer(id))
+  end
+
+  def find_by(:name, name) when is_binary(name) do
     Repo.one(from(u in User, where: u.name == ^name))
   end
 

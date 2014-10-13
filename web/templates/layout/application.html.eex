@@ -16,6 +16,8 @@
     <%= render "header.html" %>
 
     <div class="container">
+      <%= render "flash.html", conn: @conn %>
+
       <%= @inner %>
 
       <%= render "footer.html" %>

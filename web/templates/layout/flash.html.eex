@@ -1,0 +1,21 @@
+<%= if success = Flash.get(@conn, :success) do %>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="alert alert-success">
+        <p><%= success %></p>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= if warning = Flash.get(@conn, :warning) do %>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="alert alert-warning">
+        <%= for message <- warning do %>
+          <p><%= message %></p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -7,9 +7,11 @@ use Mix.Config
 
 # Configures the router
 config :phoenix, PhMicroblog.Router,
-  port: System.get_env("PORT"),
-  ssl: false,
+  url: [host: "localhost"],
+  http: [port: System.get_env("PORT")],
+  https: false,
   secret_key_base: "EUJTlBrZ4B1Ojpk+NB2YW+thnw683bgPulR66kyfbcZ5C7G/9AaiR9tSzECiGd13SuWPT7p6fB99XeI7QakK3A==",
+  cookies: true,
   catch_errors: true,
   debug_errors: false,
   error_controller: PhMicroblog.PageController

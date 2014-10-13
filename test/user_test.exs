@@ -4,12 +4,7 @@ defmodule UserFacts do
   alias PhMicroblog.User
   alias PhMicroblog.Repo
 
-  @valid_params %{
-    "name"  => "joe",
-    "email" => "joe@example.com",
-    "password"     => "abcdefgh",
-    "confirmation" => "abcdefgh"
-  }
+  @valid_params TestHelper.valid_user_params
 
   setup_all do
     Repo.delete_all(User)
@@ -25,7 +20,7 @@ defmodule UserFacts do
       Repo.delete_all(User)
       {:ok, user} = User.create(@valid_params)
 
-      %User{user | password: nil, confirmation: nil} |> equals User.find(user.id)
+      %User{user | password: nil, confirmation: nil} |> equals User.find_by(:id, user.id)
     end
 
     fact "fail with blank name" do
