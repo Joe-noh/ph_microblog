@@ -50,7 +50,7 @@ defmodule UserFacts do
     fact "success with correct parameters" do
       {:ok, user} = User.create(@valid_params)
 
-      User.authenticate(user.name, user.password) |> matches %User{}
+      User.authenticate(user.email, user.password) |> matches %User{}
     end
 
     fact "fail with incorrect parameters" do
@@ -60,4 +60,3 @@ defmodule UserFacts do
     end
   end
 end
-

@@ -19,8 +19,8 @@ defmodule UserPagesTest do
     end
   end
 
-  facts "user pages", c do
-    fact "signin page contains 'Sign up'" do
+  facts "user pages" do
+    fact "signup page contains 'Sign up'" do
       navigate_to url(Router.user_path :new)
 
       page_source |> contains "Sign up"
@@ -41,12 +41,13 @@ defmodule UserPagesTest do
 
       navigate_to url(Router.user_path :new)
 
-      find_element(:id, "name") |> fill_field(params["name"])
-      find_element(:id, "email") |> fill_field(params["email"])
-      find_element(:id, "password") |> fill_field(params["password"])
+      find_element(:id, "name")         |> fill_field(params["name"])
+      find_element(:id, "email")        |> fill_field(params["email"])
+      find_element(:id, "password")     |> fill_field(params["password"])
       find_element(:id, "confirmation") |> fill_field(params["confirmation"])
 
       find_element(:id, "submit-button") |> click
+      User.find_by(:name, params["name"]) |> Repo.delete
 
       page_source |> contains "successfully"
     end
