@@ -13,7 +13,7 @@
   </head>
 
   <body>
-    <%= render "header.html" %>
+    <%= render "header.html", conn: @conn %>
 
     <div class="container">
       <%= render "flash.html", conn: @conn %>

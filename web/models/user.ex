@@ -34,8 +34,8 @@ defmodule PhMicroblog.User do
     end
   end
 
-  def authenticate(name, pass) do
-    case User.find_by(:name, name) do
+  def authenticate(email, pass) do
+    case User.find_by(:email, email) do
       nil  -> nil
       user ->
         {:ok, digest} = :bcrypt.hashpw(pass, String.to_char_list(user.digest))
@@ -56,6 +56,10 @@ defmodule PhMicroblog.User do
 
   def find_by(:name, name) when is_binary(name) do
     Repo.one(from(u in User, where: u.name == ^name))
+  end
+
+  def find_by(:email, email) when is_binary(email) do
+    Repo.one(from(u in User, where: u.email == ^email))
   end
 
   def all, do: Repo.all(User)

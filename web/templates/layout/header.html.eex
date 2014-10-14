@@ -5,7 +5,16 @@
         <ul class="nav nav-pills pull-right">
           <li><a href="<%= static_page_path(:home) %>">Home</a></li>
           <li><a href="<%= static_page_path(:help) %>">Help</a></li>
-          <li><a href="#">Sign in</a></li>
+          <%= if logged_in?(@conn) do %>
+            <li>
+              <form id="signout" action="<%= signout_path(:destroy) %>" method="post" type="hidden">
+                <input type="hidden" name="_method" value="DELETE">
+              </form>
+              <a href="#" onclick="document.getElementById('signout').submit();">Sign out</a>
+             </li>
+          <% else %>
+            <li><a href="<%= session_path(:new) %>">Sign in</a></li>
+          <% end %>
         </ul>
       </nav>
     </div>

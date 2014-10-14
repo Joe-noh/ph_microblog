@@ -16,4 +16,11 @@ defmodule PhMicroblog.Views do
   def title(nil),  do: "PH Microblog"
   def title(name), do: "#{name} | PH Microblog"
 
+  def logged_in?(conn) do
+    case Plug.Conn.get_session(conn, :email) do
+      ""  -> false
+      nil -> false
+      _   -> true
+    end
+  end
 end

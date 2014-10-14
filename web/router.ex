@@ -11,6 +11,9 @@ defmodule PhMicroblog.Router do
     get "/static_pages/contact", PhMicroblog.StaticPageController, :contact, as: :static_page
 
     resources "/users", PhMicroblog.UserController
+
+    resources "/sessions", PhMicroblog.SessionController, only: [:new, :create]
+    delete "/sessions", PhMicroblog.SessionController, :destroy, as: :signout
   end
 
   # Other scopes may use custom stacks.
