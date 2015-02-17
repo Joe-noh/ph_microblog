@@ -12,7 +12,7 @@ defmodule StaticPageTest do
 
     assert conn.state  == :sent
     assert conn.status == 200
-    assert conn.resp_body =~ ~r|Home|
+    assert conn.resp_body =~ ~r|Sample App|
   end
 
   test "help" do
@@ -23,5 +23,15 @@ defmodule StaticPageTest do
     assert conn.state  == :sent
     assert conn.status == 200
     assert conn.resp_body =~ ~r|Help|
+  end
+
+  test "about" do
+    conn = conn(:get, "/static_page/about", %{})
+      |> with_session
+      |> PhMicroblog.Router.call(@opts)
+
+    assert conn.state  == :sent
+    assert conn.status == 200
+    assert conn.resp_body =~ ~r|About|
   end
 end
