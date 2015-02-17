@@ -1,8 +1,7 @@
 use Mix.Config
 
-config :phoenix, PhMicroblog.Router,
-  http: [port: System.get_env("PORT") || 4001],
-  ssl: false
+config :ph_microblog, PhMicroblog.Endpoint,
+  http: [port: System.get_env("PORT") || 4001]
 
-config :bcrypt,
-  default_log_rounds: 4
+# Print only warnings and errors during test
+config :logger, level: :warn

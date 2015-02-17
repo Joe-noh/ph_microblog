@@ -1,4 +1,3 @@
 defmodule PhMicroblog.LayoutView do
-  use PhMicroblog.Views
-
+  use PhMicroblog.View
 end

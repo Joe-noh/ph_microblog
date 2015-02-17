@@ -7,20 +7,25 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title><%= title(@title) %></title>
+    <title>Hello Phoenix!</title>
     <link rel="stylesheet" href="/css/phoenix.css">
-    <link rel="stylesheet" href="/css/style.css">
   </head>
 
   <body>
-    <%= render "header.html", conn: @conn %>
-
     <div class="container">
-      <%= render "flash.html", conn: @conn %>
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
+        </ul>
+        <span class="logo"></span>
+      </div>
 
       <%= @inner %>
 
-      <%= render "footer.html" %>
-    </div>
+      <div class="footer">
+        <p><a href="http://phoenixframework.org">phoenixframework.org</a></p>
+      </div>
+
+    </div> <!-- /container -->
   </body>
 </html>
