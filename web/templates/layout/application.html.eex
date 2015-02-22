@@ -10,11 +10,41 @@
     <link rel="stylesheet" href="/css/lib.css">
     <link rel="stylesheet" href="/css/app.css">
 
-    <title>Sample App<%= if @title, do: " | #{@title}" %></title>
+    <title><%= full_title @title %></title>
   </head>
 
   <body>
-    <%= @inner %>
+    <header class="navbar navbar-fixed-top navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container">
+          <a href="<%= static_page_path @conn, :home %>" class="navbar-brand">Sample App</a>
+          <nav>
+            <ul class="nav navbar-nav pull-right">
+              <li><a href="<%= static_page_path @conn, :home %>">Home</a></li>
+              <li><a href="<%= static_page_path @conn, :help %>">Help</a></li>
+              <li><a href="#">Sign in</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <%= @inner %>
+
+      <footer class="footer">
+        <small>
+          <a href="http://railstutorial.jp/">Rails Tutorial</a>
+          by Michael Hartl
+        </small>
+        <nav>
+          <ul>
+            <li><a href="<%= static_page_path @conn, :about %>">About</a></li>
+            <li><a href="http://news.railstutorial.jp/">News</a></li>
+          </ul>
+        </nav>
+      </footer>
+    </div>
 
     <script type="text/javascript" src="/js/lib.js">
     <script type="text/javascript" src="/js/app.js">

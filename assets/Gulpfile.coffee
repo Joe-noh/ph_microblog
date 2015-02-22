@@ -1,7 +1,7 @@
 sources =
   bower:  'bower.json'
   coffee: './cs/**/*.coffee'
-  sass:   './sass/**/*.sass'
+  sass:   './sass/style.scss'
   js: ['./phoenix.js']
 
 libs =
@@ -13,7 +13,7 @@ del    = require 'del'
 gulp   = require 'gulp'
 coffee = require 'gulp-coffee'
 concat = require 'gulp-concat'
-sass   = require 'gulp-sass'
+sass   = require 'gulp-ruby-sass'
 uglify = require 'gulp-uglify'
 
 
@@ -46,10 +46,9 @@ gulp.task 'compile:coffee', ->
     .pipe gulp.dest '../priv/static/js/'
 
 gulp.task 'compile:sass', ->
-  gulp.src sources.sass
-      .pipe sass()
-      .pipe concat 'app.css'
-      .pipe gulp.dest '../priv/static/css/'
+  sass(sources.sass)
+    .pipe concat 'app.css'
+    .pipe gulp.dest '../priv/static/css/'
 
 gulp.task 'phoenix_js', ->
   gulp.src sources.js
