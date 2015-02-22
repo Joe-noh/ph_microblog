@@ -7,10 +7,16 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+    <link rel="stylesheet" href="/css/lib.css">
+    <link rel="stylesheet" href="/css/app.css">
+
     <title>Sample App<%= if @title, do: " | #{@title}" %></title>
   </head>
 
   <body>
     <%= @inner %>
+
+    <script type="text/javascript" src="/js/lib.js">
+    <script type="text/javascript" src="/js/app.js">
   </body>
 </html>
