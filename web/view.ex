@@ -13,5 +13,6 @@ defmodule PhMicroblog.View do
     end
   end
 
-  # Functions defined here are available to all other views/templates
+  def full_title(nil), do: "Sample App"
+  def full_title(title), do: "Sample App | #{title}"
 end
