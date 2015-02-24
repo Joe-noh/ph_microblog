@@ -25,7 +25,9 @@ defmodule PhMicroblog.Mixfile do
       {:cowboy, "~> 1.0"},
       {:postgrex, "~> 0.7"},
       {:ecto, "~> 0.8"},
-      {:comeonin, "~> 0.2"}
+      {:comeonin, "~> 0.2"},
+
+      {:floki, "~> 0.1", only: :test}
     ]
   end
 end

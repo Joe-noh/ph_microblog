@@ -12,8 +12,9 @@ defmodule StaticPageTest do
 
     assert conn.state  == :sent
     assert conn.status == 200
-    assert conn.resp_body =~ ~r{Sample App}
-    assert conn.resp_body =~ ~r{Sample App | Home}
+
+    assert have_content?(conn, "Sample App")
+    assert have_title?(conn, "Sample App | Home")
   end
 
   test "help" do
@@ -23,8 +24,9 @@ defmodule StaticPageTest do
 
     assert conn.state  == :sent
     assert conn.status == 200
-    assert conn.resp_body =~ ~r{Help}
-    assert conn.resp_body =~ ~r{Sample App | Help}
+
+    assert have_content?(conn, "Help")
+    assert have_title?(conn, "Sample App | Help")
   end
 
   test "about" do
@@ -34,7 +36,8 @@ defmodule StaticPageTest do
 
     assert conn.state  == :sent
     assert conn.status == 200
-    assert conn.resp_body =~ ~r{About}
-    assert conn.resp_body =~ ~r{Sample App | About Us}
+
+    assert have_content?(conn, "About")
+    assert have_title?(conn, "Sample App | About Us")
   end
 end

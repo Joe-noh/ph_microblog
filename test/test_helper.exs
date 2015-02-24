@@ -11,5 +11,13 @@ defmodule TestHelper do
     |> Plug.Conn.fetch_session()
     |> Plug.Conn.fetch_params()
   end
+
+  def have_content?(conn, expected) do
+    conn.resp_body =~ expected
+  end
+
+  def have_title?(conn, expected) do
+    Floki.find(conn.resp_body, "title") |> Floki.text == expected
+  end
 end
 
