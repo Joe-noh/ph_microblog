@@ -40,4 +40,16 @@ defmodule StaticPageTest do
     assert have_content?(conn, "About")
     assert have_title?(conn, "Sample App | About Us")
   end
+
+  test "contact" do
+    conn = conn(:get, "/static_page/contact", %{})
+      |> with_session
+      |> PhMicroblog.Router.call(@opts)
+
+    assert conn.state  == :sent
+    assert conn.status == 200
+
+    assert have_content?(conn, "Contact")
+    assert have_title?(conn, "Sample App | Contact")
+  end
 end

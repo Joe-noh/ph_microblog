@@ -14,4 +14,8 @@ defmodule PhMicroblog.StaticPageController do
   def about(conn, _params) do
     render conn, "about.html", title: "About Us"
   end
+
+  def contact(conn, _params) do
+    render conn, "contact.html", title: "Contact"
+  end
 end

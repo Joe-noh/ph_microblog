@@ -40,6 +40,7 @@
         <nav>
           <ul>
             <li><a href="<%= static_page_path @conn, :about %>">About</a></li>
+            <li><a href="<%= static_page_path @conn, :contact %>">Contact</a></li>
             <li><a href="http://news.railstutorial.jp/">News</a></li>
           </ul>
         </nav>
