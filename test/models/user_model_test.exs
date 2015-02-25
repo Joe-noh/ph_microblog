@@ -5,8 +5,18 @@ defmodule UserModelTest do
   import Ecto.Query
 
   setup_all do
-    john = %User{name: "john", email: "john@doe.com"}
-    mary = %User{name: "mary", email: "MARY@doe.com"} |> Repo.insert
+    john = %User{
+      name: "john",
+      email: "john@doe.com",
+      password: "abcdefgh",
+      password_confirmation: "abcdefgh"
+    }
+    mary = %User{
+      name: "mary",
+      email: "MARY@doe.com",
+      password: "12345678",
+      password_confirmation: "12345678"
+    } |> Repo.insert
 
     on_exit fn -> Repo.delete_all(User) end
 
@@ -65,5 +75,20 @@ defmodule UserModelTest do
   test "email should be downcased", context do
     email = Repo.one(from u in User, where: u.name == "mary").email
     assert email == String.downcase(context.saved.email)
+  end
+
+  test "password is too short", context do
+    user = User.changeset(context.unsaved, %{password: "a", password_confirmation: "a"})
+    refute user.valid?
+  end
+
+  test "password and confirmation don't match", context do
+    user = User.changeset(context.unsaved, %{password: "password"})
+    refute user.valid?
+  end
+
+  test "authenticate", context do
+    assert User.authenticate(context.saved.email, "12345678").name == "mary"
+    assert User.authenticate(context.saved.email, "01234567") == nil
   end
 end
