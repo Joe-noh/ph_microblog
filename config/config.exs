@@ -12,6 +12,8 @@ config :ph_microblog, PhMicroblog.Endpoint,
   debug_errors: false,
   pubsub: [adapter: Phoenix.PubSub.PG2]
 
+config :ph_microblog, PhMicroblog.Repo,
+  url: "ecto://postgres:postgres@localhost/ph_microblog_dev"
 
 # Configures Elixir's Logger
 config :logger, :console,

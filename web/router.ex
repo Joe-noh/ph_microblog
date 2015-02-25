@@ -15,10 +15,14 @@ defmodule PhMicroblog.Router do
   scope "/", PhMicroblog do
     pipe_through :browser # Use the default browser stack
 
+    get "/", StaticPageController, :home
+
     get "/static_page/home",    StaticPageController, :home
     get "/static_page/help",    StaticPageController, :help
     get "/static_page/about",   StaticPageController, :about
     get "/static_page/contact", StaticPageController, :contact
+
+    resources "/users", UserController, only: [:new]
   end
 
   # Other scopes may use custom stacks.
