@@ -22,7 +22,9 @@ defmodule PhMicroblog.Router do
     get "/static_page/about",   StaticPageController, :about
     get "/static_page/contact", StaticPageController, :contact
 
-    resources "/users", UserController, only: [:new]
+    resources "/users", UserController, except: [:new, :create]
+    get  "/signup", UserController, :new, as: :signup
+    post "/signup", UserController, :create, as: :signup
   end
 
   # Other scopes may use custom stacks.
