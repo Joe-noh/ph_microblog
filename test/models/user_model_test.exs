@@ -11,12 +11,12 @@ defmodule UserModelTest do
       password: "abcdefgh",
       password_confirmation: "abcdefgh"
     }
-    mary = %User{
+    mary = User.changeset(%{
       name: "mary",
       email: "MARY@doe.com",
       password: "12345678",
       password_confirmation: "12345678"
-    } |> Repo.insert
+    }) |> Repo.insert
 
     on_exit fn -> Repo.delete_all(User) end
 

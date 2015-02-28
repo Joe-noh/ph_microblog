@@ -16,32 +16,37 @@ defmodule PhMicroblog.User do
     field :updated_at,  Ecto.DateTime, default: Ecto.DateTime.local
   end
 
+  before_insert :make_digest
   before_insert :downcase_email
   before_update :downcase_email
-  before_insert :make_digest
   before_update :make_digest
 
-  def changeset(user, params \\ %{}) do
-    set = params
-      |> cast(user, ~w(name email password password_confirmation), [])
-      |> validate_unique(:name, on: PhMicroblog.Repo)
-      |> validate_length(:name, max: 50)
-      |> validate_unique(:email, on: PhMicroblog.Repo, downcase: true)
-      |> validate_format(:email, ~r/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i)
-      |> validate_length(:password, min: 8)
-      |> validate_length(:password_confirmation, min: 8)
+  def changeset(user \\ %User{}, params) do
+    params
+    |> cast(user, ~w(name email password password_confirmation), [])
+    |> validate_unique(:name, on: PhMicroblog.Repo)
+    |> validate_length(:name, max: 50)
+    |> validate_unique(:email, on: PhMicroblog.Repo, downcase: true)
+    |> validate_format(:email, ~r/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i)
+    |> validate_length(:password, min: 8)
+    |> validate_length(:password_confirmation, min: 8)
+    |> validate_password_confirmation
+  end
 
-    pass = get_field(set, :password)
-    conf = get_field(set, :password_confirmation)
-    case pass do
-      ^conf  -> set
-      _other -> add_error(set, :password, "password and confirmation don't match")
+  defp validate_password_confirmation(changeset) do
+    pass = get_change(changeset, :password)
+    conf = get_change(changeset, :password_confirmation)
+
+    if pass == conf do
+      changeset
+    else
+      add_error(changeset, :password, "password and confirmation don't match")
     end
   end
 
   def authenticate(email, password) do
     case Repo.one(from u in User, where: u.email == ^email) do
-      nil  -> nil
+      nil  -> Comeonin.Bcrypt.dummy_checkpw
       user -> check_password(user, password)
     end
   end
@@ -61,7 +66,7 @@ defmodule PhMicroblog.User do
   end
 
   defp make_digest(changeset) do
-    case get_field(changeset, :password) do
+    case get_change(changeset, :password) do
       nil  -> changeset
       pass -> put_change(changeset, :digest, Comeonin.Bcrypt.hashpwsalt(pass))
     end
