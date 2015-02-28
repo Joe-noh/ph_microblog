@@ -1,3 +1,5 @@
 <h1>Sign up</h1>
 
-<%= render "_form.html", action: user_path(:create) %>
+<%= render PhMicroblog.SharedView, "_error_messages.html", errors: @errors %>
+
+<%= render PhMicroblog.UserView, "_form.html", conn: @conn, user: @user %>

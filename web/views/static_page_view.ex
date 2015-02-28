@@ -1,4 +1,3 @@
 defmodule PhMicroblog.StaticPageView do
-  use PhMicroblog.Views
-
+  use PhMicroblog.View
 end

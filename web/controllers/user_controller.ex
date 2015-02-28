@@ -1,59 +1,35 @@
 defmodule PhMicroblog.UserController do
-  use Phoenix.Controller
+  use PhMicroblog.BaseController
 
-  alias Phoenix.Controller.Flash
   alias PhMicroblog.User
-  alias PhMicroblog.Router.Helpers, as: Router
+  alias PhMicroblog.Repo
+  alias PhMicroblog.Router.Helpers, as: Route
 
   plug :action
 
-  def index(conn, _params) do
-    users = User.all
-    render conn, "index", users: users
-  end
-
-  def edit(conn, %{"id" => id}) do
-    user = User.find_by(:id, id)
-    render conn, "edit", user: user
-  end
-
   def new(conn, _params) do
-    render conn, "new", user: User.new
+    render conn, "new.html", title: "Sign up"
   end
 
   def show(conn, %{"id" => id}) do
-    user = User.find_by(:id, id)
-    render conn, "show", user: user
-  end
-
-  def create(conn, %{"user" => params}) do
-    case User.create(params) do
-      {:ok, user} ->
-        conn
-        |> Flash.put(:success, "Signed up successfully")
-        |> redirect(Router.user_path(:show, user.id))
-      {:error, messages} ->
-        conn
-        |> Flash.put(:warning, messages)
-        |> redirect(Router.user_path :new)
+    case Repo.get(User, id) do
+      nil  -> not_found(conn)
+      user -> render conn, "show.html", user: user, title: user.name
     end
   end
 
-  def update(conn, %{"id" => id, "user" => params}) do
-    case User.update(id, params) do
-      {:ok, user} ->
-        conn
-        |> Flash.put(:success, "Updated successfully")
-        |> redirect(Router.user_path(:show, user.id))
-      {:error, messages} ->
-        conn
-        |> Flash.put(:warning, messages)
-        |> redirect(Router.user_path(:edit, id))
-    end
-  end
+  def create(conn, %{"user" => user_params}) do
+    changeset = User.changeset(user_params)
 
-  def destroy(conn, params) do
-    User.destroy(Dict.get(params, "id"))
-    conn |> redirect("/")
+    if changeset.valid? do
+      user = Repo.insert(changeset)
+
+      conn
+      |> put_flash(:success, "Welcome to the Sample App!")
+      |> redirect to: Route.user_path(conn, :show, user.id)
+    else
+      render conn, "new.html", user: changeset.params,
+             errors: changeset.errors, title: "Sign up"
+    end
   end
 end

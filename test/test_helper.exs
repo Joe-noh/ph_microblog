@@ -1,36 +1,23 @@
 ExUnit.start
-Amrita.start
 
 defmodule TestHelper do
-  use Hound.Helpers
+  @session_opts Plug.Session.init(store: :cookie, key: "_app",
+                                  encryption_salt: "abc", signing_salt: "abc")
 
-  alias PhMicroblog.Router.Helpers, as: Router
-  alias PhMicroblog.User
-  alias PhMicroblog.Repo
-
-  @port 4001
-
-  def url(path) do
-    "http://localhost:#{@port}#{path}"
+  def with_session(conn) do
+    conn
+    |> Map.put(:secret_key_base, String.duplicate("a", 64))
+    |> Plug.Session.call(@session_opts)
+    |> Plug.Conn.fetch_session()
+    |> Plug.Conn.fetch_params()
   end
 
-  def valid_user_params do
-    %{"name"  => "joe",
-      "email" => "joe@example.com",
-      "password"     => "abcdefgh",
-      "confirmation" => "abcdefgh"}
+  def have_content?(conn, expected) do
+    conn.resp_body =~ expected
   end
 
-  def signin_via_form do
-    params = valid_user_params
-    {:ok, user} = User.create(valid_user_params)
-
-    navigate_to url(Router.session_path :new)
-
-    find_element(:id, "email")    |> fill_field(params["email"])
-    find_element(:id, "password") |> fill_field(params["password"])
-
-    find_element(:id, "submit-button") |> click
-    Repo.delete(user)
+  def have_title?(conn, expected) do
+    Floki.find(conn.resp_body, "title") |> Floki.text == expected
   end
 end
+

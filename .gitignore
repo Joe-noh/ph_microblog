@@ -5,3 +5,11 @@ erl_crash.dump
 
 /config/prod.exs
 /lib/ph_microblog/repo.ex
+
+/priv/static/css
+/priv/static/js
+
+/assets/node_modules
+/assets/bower_components
+
+.sass-cache

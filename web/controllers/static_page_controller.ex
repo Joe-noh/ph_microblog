@@ -4,26 +4,18 @@ defmodule PhMicroblog.StaticPageController do
   plug :action
 
   def home(conn, _params) do
-    render conn, "home", title: "Home"
+    render conn, "home.html", title: "Home"
   end
 
   def help(conn, _params) do
-    render conn, "help", title: "Help"
+    render conn, "help.html", title: "Help"
   end
 
   def about(conn, _params) do
-    render conn, "about", title: "About"
+    render conn, "about.html", title: "About Us"
   end
 
   def contact(conn, _params) do
-    render conn, "contact", title: "Contact"
-  end
-
-  def not_found(conn, _params) do
-    render conn, "not_found"
-  end
-
-  def error(conn, _params) do
-    render conn, "error"
+    render conn, "contact.html", title: "Contact"
   end
 end

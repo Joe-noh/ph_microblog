@@ -1,0 +1,22 @@
+{
+  "name": "ph_microblog",
+  "version": "0.1.0",
+  "homepage": "https://github.com/Joe-noh/ph_microblog",
+  "authors": [
+    "Joe Honzawa"
+  ],
+  "main": "Gulpfile.coffee",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.2",
+    "coffee-script": "~1.9.1"
+  }
+}

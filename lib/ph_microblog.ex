@@ -7,6 +7,8 @@ defmodule PhMicroblog do
     import Supervisor.Spec, warn: false
 
     children = [
+      # Start the endpoint when the application starts
+      supervisor(PhMicroblog.Endpoint, []),
       worker(PhMicroblog.Repo, [])
     ]
 
@@ -14,5 +16,12 @@ defmodule PhMicroblog do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: PhMicroblog.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  # Tell Phoenix to update the endpoint configuration
+  # whenever the application is updated.
+  def config_change(changed, _new, removed) do
+    PhMicroblog.Endpoint.config_change(changed, removed)
+    :ok
   end
 end
