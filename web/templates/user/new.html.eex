@@ -1,5 +1,0 @@
-<h1>Sign up</h1>
-
-<%= render PhMicroblog.SharedView, "_error_messages.html", errors: @errors %>
-
-<%= render PhMicroblog.UserView, "_form.html", conn: @conn, user: @user %>

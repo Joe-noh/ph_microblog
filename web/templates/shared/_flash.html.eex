@@ -1,7 +1,0 @@
-<%= if message = get_flash(@conn, :success) do %>
-  <div class="row">
-    <div class="col-lg-6 col-lg-offset-3">
-      <div class="alert alert-success"><%= message %></div>
-    </div>
-  </div>
-<% end %>
