@@ -6,10 +6,14 @@ defmodule PhMicroblog.StaticPageController do
   end
 
   def help(conn, _params) do
-    render conn, "help.html"
+    conn
+    |> assign(:title, "help")
+    |> render("help.html")
   end
 
   def about(conn, _params) do
-    render conn, "about.html"
+    conn
+    |> assign(:title, "about")
+    |> render("about.html")
   end
 end
