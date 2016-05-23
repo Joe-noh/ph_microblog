@@ -1,11 +1,8 @@
 defmodule PhMicroblog.LayoutView do
   use PhMicroblog.Web, :view
 
-  def full_title(nil) do
-    "Sample App"
-  end
+  @base "Sample App"
 
-  def full_title(title) do
-    "#{title} | Sample App"
-  end
+  def full_title(nil),   do: @base
+  def full_title(title), do: "#{title} | #{@base}"
 end
