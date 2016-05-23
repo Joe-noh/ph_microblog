@@ -1,4 +1,4 @@
-defmodule PhMicroblog.PageControllerTest do
+defmodule PhMicroblog.StaticPageControllerTest do
   use PhMicroblog.ConnCase
 
   test "GET /", %{conn: conn} do

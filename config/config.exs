@@ -14,6 +14,8 @@ config :ph_microblog, PhMicroblog.Endpoint,
   pubsub: [name: PhMicroblog.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
+config :ph_microblog, ecto_repos: [PhMicroblog.Repo]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
