@@ -17,9 +17,23 @@ defmodule PhMicroblog.Mixfile do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    [mod: {PhMicroblog, []},
-     applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex]]
+    [
+      mod: {PhMicroblog, []},
+      applications: apps(Mix.env)
+    ]
+  end
+
+  defp apps(:test) do
+    apps() ++ [:ex_machina]
+  end
+
+  defp apps(_), do: apps()
+
+  defp apps do
+    [
+      :phoenix, :phoenix_html, :cowboy, :logger, :gettext,
+      :phoenix_ecto, :postgrex
+    ]
   end
 
   # Specifies which paths to compile per environment.
@@ -39,7 +53,8 @@ defmodule PhMicroblog.Mixfile do
       {:gettext, "~> 0.9"},
       {:cowboy, "~> 1.0"},
 
-      {:floki, "~> 0.8", only: :test}
+      {:floki, "~> 0.8", only: :test},
+      {:ex_machina, "~> 0.6.1", only: :test}
     ]
   end
 
