@@ -23,6 +23,7 @@ defmodule PhMicroblog.User do
     |> validate_required(:password_digest)
     |> validate_length(:name, max: 50)
     |> validate_length(:email, max: 255)
+    |> validate_length(:password, min: 6)
     |> validate_format(:email, @email_format)
     |> validate_confirmation(:password)
     |> update_change(:email, &String.downcase/1)

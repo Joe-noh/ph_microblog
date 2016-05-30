@@ -59,8 +59,14 @@ defmodule PhMicroblog.UserTest do
     assert changeset |> Ecto.Changeset.get_field(:email) == "hoge@example.com"
   end
 
+  test "password shouldn't be too short", %{user: user} do
+    params = %{password: "aaaaa", password_confirmation: "aaaaa"}
+
+    assert errors_on(user, params)[:password]
+  end
+
   test "password and its confirmation have to be same when there's password", %{user: user} do
-    params = %{password: "aaaaa", password_confirmation: "bbbbb"}
+    params = %{password: "aaaaaa", password_confirmation: "bbbbbb"}
 
     assert errors_on(user, params)[:password_confirmation]
   end
