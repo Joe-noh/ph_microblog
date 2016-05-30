@@ -16,7 +16,7 @@
   </head>
 
   <body>
-    <%= render "header.html" %>
+    <%= render "header.html", conn: @conn %>
 
     <%= if get_flash(@conn, :info) != nil do %>
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
@@ -28,7 +28,7 @@
     <main role="main" class="container">
       <%= render @view_module, @view_template, assigns %>
 
-      <%= render "footer.html" %>
+      <%= render "footer.html", conn: @conn %>
     </main>
 
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>

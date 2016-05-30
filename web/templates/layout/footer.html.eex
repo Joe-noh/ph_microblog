@@ -5,8 +5,8 @@
   </small>
   <nav>
     <ul>
-      <li><%= link "About",   to: "#" %></li>
-      <li><%= link "Contact", to: "#" %></li>
+      <li><%= link "About",   to: static_page_path(@conn, :about) %></li>
+      <li><%= link "Contact", to: static_page_path(@conn, :contact) %></li>
       <li><a href="http://news.railstutorial.org/">News</a></li>
     </ul>
   </nav>

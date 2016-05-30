@@ -16,4 +16,10 @@ defmodule PhMicroblog.StaticPageController do
     |> assign(:title, "about")
     |> render("about.html")
   end
+
+  def contact(conn, _params) do
+    conn
+    |> assign(:title, "contact")
+    |> render("contact.html")
+  end
 end

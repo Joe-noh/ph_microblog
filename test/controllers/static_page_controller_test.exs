@@ -24,4 +24,12 @@ defmodule PhMicroblog.StaticPageControllerTest do
 
     assert html |> Floki.find("title") |> Floki.text == "about | Sample App"
   end
+
+  test "GET contact", %{conn: conn} do
+    html = conn
+      |> get(static_page_path conn, :contact)
+      |> html_response(200)
+
+    assert html |> Floki.find("title") |> Floki.text == "contact | Sample App"
+  end
 end
