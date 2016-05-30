@@ -64,4 +64,10 @@ defmodule PhMicroblog.UserTest do
 
     assert errors_on(user, params)[:password_confirmation]
   end
+
+  test "update without password should succeed", %{user: user} do
+    user = Factory.create(:user, email: user.email)
+
+    assert errors_on(user, %{name: "alex"}) == []
+  end
 end
