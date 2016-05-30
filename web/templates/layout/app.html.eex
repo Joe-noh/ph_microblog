@@ -16,18 +16,7 @@
   </head>
 
   <body>
-    <header class="navbar navbar-fixed-top navbar-inverse">
-      <div class="container">
-        <%= link "sample app", to: "#", id: "logo" %>
-        <nav>
-          <ul class="nav navbar-nav navbar-right">
-            <li><%= link "Home",   to: "#" %></li>
-            <li><%= link "Help",   to: "#" %></li>
-            <li><%= link "Log in", to: "#" %></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+    <%= render "header.html" %>
 
     <%= if get_flash(@conn, :info) != nil do %>
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
@@ -38,6 +27,8 @@
 
     <main role="main" class="container">
       <%= render @view_module, @view_template, assigns %>
+
+      <%= render "footer.html" %>
     </main>
 
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
