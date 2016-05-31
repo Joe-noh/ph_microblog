@@ -15,6 +15,10 @@ defmodule PhMicroblog.UserController do
     changeset = User.changeset(%User{}, user_params)
 
     case Repo.insert(changeset) do
+      {:ok, user} ->
+        conn
+        |> put_flash(:info, "Welcome to Sample App!")
+        |> redirect(to: user_path(conn, :show, user))
       {:error, changeset} ->
         render conn, "new.html", title: "Sign up", changeset: changeset
     end
