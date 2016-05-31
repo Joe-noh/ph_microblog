@@ -16,8 +16,7 @@ defmodule PhMicroblog.UserController do
 
     case Repo.insert(changeset) do
       {:error, changeset} ->
-        conn
-        |> render "new.html", changeset: changeset
+        render conn, "new.html", title: "Sign up", changeset: changeset
     end
   end
 
