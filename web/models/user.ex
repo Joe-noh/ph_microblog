@@ -31,8 +31,8 @@ defmodule PhMicroblog.User do
     |> unique_constraint(:email)
   end
 
-  def gravatar_for(%{email: email}) do
-    "https://secure.gravatar.com/avatar/#{md5_digest(email)}"
+  def gravatar_for(%{email: email}, size) do
+    "https://secure.gravatar.com/avatar/#{md5_digest(email)}?s=#{size}"
   end
 
   defp md5_digest(email) do

@@ -3,7 +3,7 @@ defmodule PhMicroblog.UserView do
 
   alias PhMicroblog.User
 
-  def gravatar_url(user) do
-    User.gravatar_for(user)
+  def gravatar_url(user, size \\ 80) do
+    User.gravatar_for(user, size)
   end
 end
