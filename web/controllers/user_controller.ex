@@ -5,6 +5,9 @@ defmodule PhMicroblog.UserController do
 
   def show(conn, %{"id" => id}) do
     user = Repo.get!(User, id)
-    render conn, user: user
+
+    conn
+    |> assign(:title, user.name)
+    |> render(user: user)
   end
 end
