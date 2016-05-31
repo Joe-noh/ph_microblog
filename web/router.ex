@@ -1,30 +1,28 @@
 defmodule PhMicroblog.Router do
-  use Phoenix.Router
+  use PhMicroblog.Web, :router
 
   pipeline :browser do
-    plug :accepts, ~w(html)
+    plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
+    plug :put_secure_browser_headers
   end
 
   pipeline :api do
-    plug :accepts, ~w(json)
+    plug :accepts, ["json"]
   end
 
   scope "/", PhMicroblog do
     pipe_through :browser # Use the default browser stack
 
-    get "/", StaticPageController, :home
+    get "/",                    StaticPageController, :home
+    get "static_pages/help",    StaticPageController, :help
+    get "static_pages/about",   StaticPageController, :about
+    get "static_pages/contact", StaticPageController, :contact
 
-    get "/static_page/home",    StaticPageController, :home
-    get "/static_page/help",    StaticPageController, :help
-    get "/static_page/about",   StaticPageController, :about
-    get "/static_page/contact", StaticPageController, :contact
-
-    resources "/users", UserController, except: [:new, :create]
-    get  "/signup", UserController, :new, as: :signup
-    post "/signup", UserController, :create, as: :signup
+    get "signup", UserController, :new
+    resources "/users", UserController, except: [:new]
   end
 
   # Other scopes may use custom stacks.

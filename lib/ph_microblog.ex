@@ -9,7 +9,10 @@ defmodule PhMicroblog do
     children = [
       # Start the endpoint when the application starts
       supervisor(PhMicroblog.Endpoint, []),
-      worker(PhMicroblog.Repo, [])
+      # Start the Ecto repository
+      supervisor(PhMicroblog.Repo, []),
+      # Here you could define other workers and supervisors as children
+      # worker(PhMicroblog.Worker, [arg1, arg2, arg3]),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

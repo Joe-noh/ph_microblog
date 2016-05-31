@@ -1,21 +1,25 @@
 defmodule PhMicroblog.StaticPageController do
-  use Phoenix.Controller
-
-  plug :action
+  use PhMicroblog.Web, :controller
 
   def home(conn, _params) do
-    render conn, "home.html", title: "Home"
+    render conn, "home.html"
   end
 
   def help(conn, _params) do
-    render conn, "help.html", title: "Help"
+    conn
+    |> assign(:title, "help")
+    |> render("help.html")
   end
 
   def about(conn, _params) do
-    render conn, "about.html", title: "About Us"
+    conn
+    |> assign(:title, "about")
+    |> render("about.html")
   end
 
   def contact(conn, _params) do
-    render conn, "contact.html", title: "Contact"
+    conn
+    |> assign(:title, "contact")
+    |> render("contact.html")
   end
 end

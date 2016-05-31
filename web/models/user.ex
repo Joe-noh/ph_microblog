@@ -1,74 +1,58 @@
 defmodule PhMicroblog.User do
-  use Ecto.Model
-
-  alias PhMicroblog.Repo
-  alias PhMicroblog.User
+  use PhMicroblog.Web, :model
 
   schema "users" do
     field :name, :string
     field :email, :string
+    field :password_digest, :string
 
-    field :digest, :string
-    field :password,              :string, virtual: true
-    field :password_confirmation, :string, virtual: true
+    field :password, :string, virtual: true
 
-    field :inserted_at, Ecto.DateTime, default: Ecto.DateTime.local
-    field :updated_at,  Ecto.DateTime, default: Ecto.DateTime.local
+    timestamps
   end
 
-  before_insert :make_digest
-  before_insert :downcase_email
-  before_update :downcase_email
-  before_update :make_digest
+  @allowed ~w[name email password]
 
-  def changeset(user \\ %User{}, params) do
-    params
-    |> cast(user, ~w(name email password password_confirmation), [])
-    |> validate_unique(:name, on: PhMicroblog.Repo)
+  @email_format ~r/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+
+  def changeset(model, params \\ %{}) do
+    model
+    |> cast(params, @allowed)
+    |> generate_digest
+    |> validate_required(:name)
+    |> validate_required(:email)
+    |> validate_required(:password_digest)
     |> validate_length(:name, max: 50)
-    |> validate_unique(:email, on: PhMicroblog.Repo, downcase: true)
-    |> validate_format(:email, ~r/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i)
-    |> validate_length(:password, min: 8)
-    |> validate_length(:password_confirmation, min: 8)
-    |> validate_password_confirmation
+    |> validate_length(:email, max: 255)
+    |> validate_length(:password, min: 6)
+    |> validate_format(:email, @email_format)
+    |> validate_confirmation(:password)
+    |> update_change(:email, &String.downcase/1)
+    |> unique_constraint(:email)
   end
 
-  defp validate_password_confirmation(changeset) do
-    pass = get_change(changeset, :password)
-    conf = get_change(changeset, :password_confirmation)
+  def gravatar_for(%{email: email}, size) do
+    "https://secure.gravatar.com/avatar/#{md5_digest(email)}?s=#{size}"
+  end
 
-    if pass == conf do
-      changeset
+  defp md5_digest(email) do
+    email
+    |> String.downcase
+    |> :erlang.md5
+    |> stringify_digest
+  end
+
+  defp stringify_digest(md5) do
+    parts = for <<c <- md5>>, do: c |> Integer.to_string(16) |> String.rjust(2, ?0)
+    parts |> List.flatten |> Enum.join |> String.downcase
+  end
+
+  defp generate_digest(changeset) do
+    password = get_field(changeset, :password, nil)
+    if password != nil do
+      put_change(changeset, :password_digest, Comeonin.Bcrypt.hashpwsalt(password))
     else
-      add_error(changeset, :password, "password and confirmation don't match")
-    end
-  end
-
-  def authenticate(email, password) do
-    case Repo.one(from u in User, where: u.email == ^email) do
-      nil  -> Comeonin.Bcrypt.dummy_checkpw
-      user -> check_password(user, password)
-    end
-  end
-
-  defp check_password(user, password) do
-    case Comeonin.Bcrypt.checkpw(password, user.digest) do
-      true  -> user
-      false -> nil
-    end
-  end
-
-  defp downcase_email(changeset) do
-    case get_change(changeset, :email) do
-      nil   -> changeset
-      email -> put_change(changeset, :email, String.downcase(email))
-    end
-  end
-
-  defp make_digest(changeset) do
-    case get_change(changeset, :password) do
-      nil  -> changeset
-      pass -> put_change(changeset, :digest, Comeonin.Bcrypt.hashpwsalt(pass))
+      changeset
     end
   end
 end

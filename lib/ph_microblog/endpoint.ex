@@ -1,16 +1,26 @@
 defmodule PhMicroblog.Endpoint do
   use Phoenix.Endpoint, otp_app: :ph_microblog
 
-  # Serve at "/" the given assets from "priv/static" directory
+  socket "/socket", PhMicroblog.UserSocket
+
+  # Serve at "/" the static files from "priv/static" directory.
+  #
+  # You should set gzip to true if you are running phoenix.digest
+  # when deploying your static files in production.
   plug Plug.Static,
-    at: "/", from: :ph_microblog,
-    only: ~w(css images js favicon.ico robots.txt)
+    at: "/", from: :ph_microblog, gzip: false,
+    only: ~w(css fonts images js favicon.ico robots.txt)
 
+  # Code reloading can be explicitly enabled under the
+  # :code_reloader configuration of your endpoint.
+  if code_reloading? do
+    socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
+    plug Phoenix.LiveReloader
+    plug Phoenix.CodeReloader
+  end
+
+  plug Plug.RequestId
   plug Plug.Logger
-
-  # Code reloading will only work if the :code_reloader key of
-  # the :phoenix application is set to true in your config file.
-  plug Phoenix.CodeReloader
 
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
@@ -23,8 +33,7 @@ defmodule PhMicroblog.Endpoint do
   plug Plug.Session,
     store: :cookie,
     key: "_ph_microblog_key",
-    signing_salt: "3gTPw3JL",
-    encryption_salt: "Zh2ey+RU"
+    signing_salt: "DTNbVwLU"
 
-  plug :router, PhMicroblog.Router
+  plug PhMicroblog.Router
 end

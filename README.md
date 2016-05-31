@@ -1,15 +1,20 @@
 # PhMicroblog
 
-__W.I.P__
+To start your Phoenix app:
 
-## Try
+  * Install dependencies with `mix deps.get`
+  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
+  * Install Node.js dependencies with `npm install`
+  * Start Phoenix endpoint with `mix phoenix.server`
 
-To start this application:
+Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-1. Install dependencies with `mix do deps.get, deps.compile`
-2. Create postgres database `ph_microblog_dev` and `ph_microblog_test`
-3. Migrate with `mix ecto.migrate PhMicroblog.Repo`
-4. Execute `mix test` and see green
-5. Start Phoenix router with `mix phoenix.server`
-6. Visit `localhost:4000`
+Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
 
+## Learn more
+
+  * Official website: http://www.phoenixframework.org/
+  * Guides: http://phoenixframework.org/docs/overview
+  * Docs: http://hexdocs.pm/phoenix
+  * Mailing list: http://groups.google.com/group/phoenix-talk
+  * Source: https://github.com/phoenixframework/phoenix

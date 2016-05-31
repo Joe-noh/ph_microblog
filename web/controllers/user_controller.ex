@@ -1,35 +1,34 @@
 defmodule PhMicroblog.UserController do
-  use PhMicroblog.BaseController
+  use PhMicroblog.Web, :controller
 
-  alias PhMicroblog.User
-  alias PhMicroblog.Repo
-  alias PhMicroblog.Router.Helpers, as: Route
-
-  plug :action
+  alias PhMicroblog.{User, Repo}
 
   def new(conn, _params) do
-    render conn, "new.html", title: "Sign up"
-  end
+    changeset = User.changeset(%User{})
 
-  def show(conn, %{"id" => id}) do
-    case Repo.get(User, id) do
-      nil  -> not_found(conn)
-      user -> render conn, "show.html", user: user, title: user.name
-    end
+    conn
+    |> assign(:title, "Sign up")
+    |> render(changeset: changeset)
   end
 
   def create(conn, %{"user" => user_params}) do
-    changeset = User.changeset(user_params)
+    changeset = User.changeset(%User{}, user_params)
 
-    if changeset.valid? do
-      user = Repo.insert(changeset)
-
-      conn
-      |> put_flash(:success, "Welcome to the Sample App!")
-      |> redirect to: Route.user_path(conn, :show, user.id)
-    else
-      render conn, "new.html", user: changeset.params,
-             errors: changeset.errors, title: "Sign up"
+    case Repo.insert(changeset) do
+      {:ok, user} ->
+        conn
+        |> put_flash(:info, "Welcome to Sample App!")
+        |> redirect(to: user_path(conn, :show, user))
+      {:error, changeset} ->
+        render conn, "new.html", title: "Sign up", changeset: changeset
     end
+  end
+
+  def show(conn, %{"id" => id}) do
+    user = Repo.get!(User, id)
+
+    conn
+    |> assign(:title, user.name)
+    |> render(user: user)
   end
 end

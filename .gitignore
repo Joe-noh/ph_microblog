@@ -1,15 +1,24 @@
+# App artifacts
 /_build
+/db
 /deps
+/*.ez
+
+# Generate on crash by the VM
 erl_crash.dump
-*.ez
 
-/config/prod.exs
-/lib/ph_microblog/repo.ex
+# Static artifacts
+/node_modules
 
-/priv/static/css
-/priv/static/js
+# Since we are building assets from web/static,
+# we ignore priv/static. You may want to comment
+# this depending on your deployment strategy.
+/priv/static/
 
-/assets/node_modules
-/assets/bower_components
-
-.sass-cache
+# The config/prod.secret.exs file by default contains sensitive
+# data and you should not commit it into version control.
+#
+# Alternatively, you may comment the line below and commit the
+# secrets file as long as you replace its contents by environment
+# variables.
+/config/prod.secret.exs

@@ -1,8 +1,8 @@
 <div class="row">
-  <aside class="span4">
-    <section>
+  <aside class="col-md-4">
+    <section class="user_info">
       <h1>
-        <img class="gravatar" src="<%= gravatar_url(@user.email) %>" alt="<%= @user.name %>">
+        <%= tag :img, src: gravatar_url(@user) %>
         <%= @user.name %>
       </h1>
     </section>
