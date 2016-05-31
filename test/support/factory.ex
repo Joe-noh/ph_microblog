@@ -7,7 +7,7 @@ defmodule PhMicroblog.Factory do
     %User{
       name: "John Doe",
       email: sequence(:email, &"user#{&1}@example.com"),
-      password_digest: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      password_digest: Comeonin.Bcrypt.hashpwsalt("password")
     }
   end
 end

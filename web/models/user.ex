@@ -31,6 +31,18 @@ defmodule PhMicroblog.User do
     |> unique_constraint(:email)
   end
 
+  def authenticate(nil, _password) do
+    Comeonin.Bcrypt.dummy_checkpw()
+  end
+
+  def authenticate(user, password) do
+    if Comeonin.Bcrypt.checkpw(password, user.password_digest) do
+      {:ok, user}
+    else
+      :error
+    end
+  end
+
   def gravatar_for(%{email: email}, size) do
     "https://secure.gravatar.com/avatar/#{md5_digest(email)}?s=#{size}"
   end

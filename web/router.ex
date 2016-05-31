@@ -23,6 +23,10 @@ defmodule PhMicroblog.Router do
 
     get "signup", UserController, :new
     resources "/users", UserController, except: [:new]
+
+    get    "login",  SessionController, :new
+    post   "login",  SessionController, :create
+    delete "logout", SessionController, :destroy
   end
 
   # Other scopes may use custom stacks.
