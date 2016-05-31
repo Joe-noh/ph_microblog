@@ -21,7 +21,8 @@ defmodule PhMicroblog.Router do
     get "static_pages/about",   StaticPageController, :about
     get "static_pages/contact", StaticPageController, :contact
 
-    resources "/users", UserController
+    get "signup", UserController, :new
+    resources "/users", UserController, except: [:new]
   end
 
   # Other scopes may use custom stacks.
