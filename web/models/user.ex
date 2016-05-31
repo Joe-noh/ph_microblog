@@ -18,6 +18,7 @@ defmodule PhMicroblog.User do
   def changeset(model, params \\ %{}) do
     model
     |> cast(params, @allowed)
+    |> generate_digest
     |> validate_required(:name)
     |> validate_required(:email)
     |> validate_required(:password_digest)
@@ -28,7 +29,6 @@ defmodule PhMicroblog.User do
     |> validate_confirmation(:password)
     |> update_change(:email, &String.downcase/1)
     |> unique_constraint(:email)
-    |> generate_digest
   end
 
   defp generate_digest(changeset) do
