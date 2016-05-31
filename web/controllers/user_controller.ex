@@ -11,6 +11,16 @@ defmodule PhMicroblog.UserController do
     |> render(changeset: changeset)
   end
 
+  def create(conn, %{"user" => user_params}) do
+    changeset = User.changeset(%User{}, user_params)
+
+    case Repo.insert(changeset) do
+      {:error, changeset} ->
+        conn
+        |> render "new.html", changeset: changeset
+    end
+  end
+
   def show(conn, %{"id" => id}) do
     user = Repo.get!(User, id)
 
