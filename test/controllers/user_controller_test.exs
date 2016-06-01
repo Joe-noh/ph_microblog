@@ -3,6 +3,10 @@ defmodule PhMicroblog.UserControllerTest do
 
   alias PhMicroblog.{Factory, User}
 
+  setup do
+    {:ok, %{user: Factory.create(:user)}}
+  end
+
   test "GET new" do
     html = conn
       |> get(user_path(conn, :new))
@@ -12,12 +16,12 @@ defmodule PhMicroblog.UserControllerTest do
   end
 
   test "POST create with valid params" do
-    params = Factory.fields_for(:user)
-      |> Map.take([:name, :email])
-      |> Map.merge(%{
-        password: "password",
-        password_confirmation: "password"
-      })
+    params = %{
+      name: "Mary Doe",
+      email: "example@example.com",
+      password: "password",
+      password_confirmation: "password"
+    }
 
     conn = post(conn, user_path(conn, :create), user: params)
     user = Repo.get_by!(User, name: params.name)
@@ -38,5 +42,17 @@ defmodule PhMicroblog.UserControllerTest do
       |> html_response(200)
 
     assert html |> Floki.find(".form-group.has-error") |> Enum.count != 0
+  end
+
+  test "PUT update with valid params", %{user: user} do
+    conn |> put(user_path(conn, :update, user), %{user: %{name: "a"}})
+
+    assert Repo.get!(User, user.id).name == "a"
+  end
+
+  test "PUT update with invalid params", %{user: user} do
+    conn |> put(user_path(conn, :update, user), %{user: %{name: ""}})
+
+    assert Repo.get!(User, user.id).name == user.name
   end
 end

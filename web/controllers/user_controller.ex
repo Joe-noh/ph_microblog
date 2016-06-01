@@ -49,9 +49,13 @@ defmodule PhMicroblog.UserController do
 
     case Repo.update(changeset) do
       {:ok, user} ->
-        redirect conn, to: user_path(conn, :show, user)
+        conn
+        |> put_flash(:info, "Profile updated")
+        |> redirect(to: user_path(conn, :show, user))
       {:error, changeset} ->
-        render conn, "edit.html", title: "Edit user", changeset: changeset, user: user
+        conn
+        |> assign(:title, "Edit user")
+        |> render("edit.html", changeset: changeset, user: user)
     end
   end
 end
