@@ -13,7 +13,7 @@
             </a>
             <ul class="dropdown-menu">
               <li><%= link "Profile", to: user_path(@conn, :show, @conn.assigns.current_user) %></li>
-              <li><%= link "Settings", to: "#" %></li>
+              <li><%= link "Settings", to: user_path(@conn, :edit, @conn.assigns.current_user) %></li>
               <li class="divider"></li>
               <li>
                 <%= link "Log out", to: session_path(@conn, :destroy), method: :delete %>

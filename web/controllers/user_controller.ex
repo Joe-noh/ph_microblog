@@ -3,6 +3,8 @@ defmodule PhMicroblog.UserController do
 
   alias PhMicroblog.{User, Repo}
 
+  plug :scrub_params, "user" when action in [:create, :update]
+
   def new(conn, _params) do
     changeset = User.changeset(%User{})
 
@@ -30,5 +32,30 @@ defmodule PhMicroblog.UserController do
     conn
     |> assign(:title, user.name)
     |> render(user: user)
+  end
+
+  def edit(conn, %{"id" => id}) do
+    user = Repo.get!(User, id)
+    changeset = User.changeset(user)
+
+    conn
+    |> assign(:title, "Edit user")
+    |> render(user: user, changeset: changeset)
+  end
+
+  def update(conn, %{"id" => id, "user" => user_params}) do
+    user = Repo.get!(User, id)
+    changeset = User.changeset(user, user_params)
+
+    case Repo.update(changeset) do
+      {:ok, user} ->
+        conn
+        |> put_flash(:info, "Profile updated")
+        |> redirect(to: user_path(conn, :show, user))
+      {:error, changeset} ->
+        conn
+        |> assign(:title, "Edit user")
+        |> render("edit.html", changeset: changeset, user: user)
+    end
   end
 end
