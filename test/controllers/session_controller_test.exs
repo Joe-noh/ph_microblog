@@ -33,4 +33,13 @@ defmodule PhMicroblog.SessionControllerTest do
 
      assert html |> Floki.find(".alert-danger") |> Floki.text =~ ~r/Invalid/
   end
+
+  test "DELETE destroy" do
+    conn = conn
+      |> with_session
+      |> put_session(:current_user_id, 3)
+      |> delete(session_path(conn, :destroy))
+
+    assert get_session(conn, :current_user_id) == nil
+  end
 end
