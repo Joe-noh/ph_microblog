@@ -31,4 +31,13 @@ defmodule PhMicroblog.UserController do
     |> assign(:title, user.name)
     |> render(user: user)
   end
+
+  def edit(conn, %{"id" => id}) do
+    user = Repo.get!(User, id)
+    changeset = User.changeset(user)
+
+    conn
+    |> assign(:title, "Edit user")
+    |> render(user: user, changeset: changeset)
+  end
 end
