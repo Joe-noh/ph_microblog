@@ -76,6 +76,31 @@ p {
   }
 }
 
+nav form > a {
+  padding-left: 20px;
+  padding-right: 20px;
+  line-height: 20px;
+  text-decoration: none;
+  box-sizing: border-box;
+  color: $gray-darker;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+@media (max-width: 767px) {
+  nav form > a {
+    padding: 5px 15px 5px 25px;
+    color: $gray-light;
+  }
+
+  &:hover {
+    text-decoration: none;
+    color: $gray-medium-light;
+  }
+}
+
 /* footer */
 
 footer {
