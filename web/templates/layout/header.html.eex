@@ -5,7 +5,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li><%= link "Home",   to: static_page_path(@conn, :home) %></li>
         <li><%= link "Help",   to: static_page_path(@conn, :help) %></li>
-        <li><%= link "Log in", to: "#" %></li>
+        <li><%= link "Log in", to: session_path(@conn, :new) %></li>
       </ul>
     </nav>
   </div>
