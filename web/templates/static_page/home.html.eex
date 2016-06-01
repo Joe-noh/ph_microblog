@@ -7,7 +7,7 @@
     sample application.
   </h2>
 
-  <%= link "Sign up now!", to: "#", class: "btn btn-lg btn-primary" %>
+  <%= link "Sign up now!", to: user_path(@conn, :new), class: "btn btn-lg btn-primary" %>
 </div>
 
 <%= link to: "http://rubyonrails.org/" do %>

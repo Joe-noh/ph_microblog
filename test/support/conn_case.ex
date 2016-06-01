@@ -29,6 +29,20 @@ defmodule PhMicroblog.ConnCase do
 
       # The default endpoint for testing
       @endpoint PhMicroblog.Endpoint
+
+      def with_session(conn) do
+        session_opts = Plug.Session.init(
+          store: :cookie,
+          key: "_app",
+          encryption_salt: "abc",
+          signing_salt: "abc"
+        )
+
+        conn
+        |> Map.put(:secret_key_base, String.duplicate("abcdefgh", 8))
+        |> Plug.Session.call(session_opts)
+        |> Plug.Conn.fetch_session()
+      end
     end
   end
 
