@@ -3,6 +3,7 @@ defmodule PhMicroblog.UserController do
 
   alias PhMicroblog.{User, Repo}
 
+  plug PhMicroblog.RequireLogin when action in [:edit, :update]
   plug :scrub_params, "user" when action in [:create, :update]
 
   def new(conn, _params) do

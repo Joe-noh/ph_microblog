@@ -5,9 +5,7 @@ defmodule PhMicroblog.Plug.CurrentUser do
 
   def session_key, do: :current_user_id
 
-  def init(_) do
-    :ok
-  end
+  def init(_), do: :ok
 
   def call(conn, _) do
     with {:ok, id} <- user_id_from_session(conn),
