@@ -2,9 +2,12 @@ defmodule PhMicroblog.UserController do
   use PhMicroblog.Web, :controller
 
   alias PhMicroblog.{User, Repo}
+  alias PhMicroblog.{RequireLogin, CorrectUser}
 
-  plug PhMicroblog.RequireLogin when action in [:edit, :update]
+  plug RequireLogin when action in [:edit, :update]
   plug :scrub_params, "user" when action in [:create, :update]
+  plug :set_user when action in [:show, :edit, :update]
+  plug CorrectUser, [get_in: [:user]] when action in [:edit, :update]
 
   def new(conn, _params) do
     changeset = User.changeset(%User{})
@@ -27,16 +30,16 @@ defmodule PhMicroblog.UserController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    user = Repo.get!(User, id)
+  def show(conn, _params) do
+    user = conn.assigns.user
 
     conn
     |> assign(:title, user.name)
     |> render(user: user)
   end
 
-  def edit(conn, %{"id" => id}) do
-    user = Repo.get!(User, id)
+  def edit(conn, _params) do
+    user = conn.assigns.user
     changeset = User.changeset(user)
 
     conn
@@ -44,8 +47,8 @@ defmodule PhMicroblog.UserController do
     |> render(user: user, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "user" => user_params}) do
-    user = Repo.get!(User, id)
+  def update(conn, %{"user" => user_params}) do
+    user = conn.assigns.user
     changeset = User.changeset(user, user_params)
 
     case Repo.update(changeset) do
@@ -58,5 +61,11 @@ defmodule PhMicroblog.UserController do
         |> assign(:title, "Edit user")
         |> render("edit.html", changeset: changeset, user: user)
     end
+  end
+
+  defp set_user(conn, _opts) do
+    user = Repo.get!(User, conn.params["id"])
+
+    conn |> assign(:user, user)
   end
 end
