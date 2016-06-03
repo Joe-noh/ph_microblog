@@ -4,7 +4,7 @@ defmodule PhMicroblog.UserControllerTest do
   alias PhMicroblog.{Factory, User}
 
   setup do
-    {:ok, %{user: Factory.create(:user)}}
+    {:ok, %{user: Factory.create(:michael)}}
   end
 
   test "GET new" do
@@ -30,7 +30,7 @@ defmodule PhMicroblog.UserControllerTest do
   end
 
   test "POST create with invalid params" do
-    params = Factory.fields_for(:user)
+    params = Factory.fields_for(:michael)
       |> Map.take([:name, :email])
       |> Map.merge(%{
         password: "pass",
