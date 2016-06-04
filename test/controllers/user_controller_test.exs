@@ -4,7 +4,12 @@ defmodule PhMicroblog.UserControllerTest do
   alias PhMicroblog.{Factory, User}
 
   setup do
-    {:ok, %{user: Factory.create(:user)}}
+    context = %{
+      user: Factory.create(:michael),
+      another_user: Factory.create(:archer)
+    }
+
+    {:ok, context}
   end
 
   test "GET new" do
@@ -30,7 +35,7 @@ defmodule PhMicroblog.UserControllerTest do
   end
 
   test "POST create with invalid params" do
-    params = Factory.fields_for(:user)
+    params = Factory.fields_for(:michael)
       |> Map.take([:name, :email])
       |> Map.merge(%{
         password: "pass",
@@ -61,6 +66,14 @@ defmodule PhMicroblog.UserControllerTest do
     assert redirected_to(conn) == session_path(conn, :new)
   end
 
+  test "GET edit by another user", %{user: user, another_user: another} do
+    conn = conn
+      |> assign(:current_user, another)
+      |> get(user_path(conn, :edit, user))
+
+    assert redirected_to(conn) == static_page_path(conn, :home)
+  end
+
   test "PUT update with valid params", %{user: user} do
     conn
     |> assign(:current_user, user)
@@ -83,5 +96,13 @@ defmodule PhMicroblog.UserControllerTest do
     |> put(user_path(conn, :update, user), %{user: %{name: "a"}})
 
     assert Repo.get!(User, user.id).name == user.name
+  end
+
+  test "PUT update by another user", %{user: user, another_user: another} do
+    conn = conn
+      |> assign(:current_user, another)
+      |> put(user_path(conn, :update, user), %{user: %{name: "a"}})
+
+    assert redirected_to(conn) == static_page_path(conn, :home)
   end
 end

@@ -4,7 +4,7 @@ defmodule PhMicroblog.UserTest do
   alias PhMicroblog.{Factory, User}
 
   setup do
-    user = Factory.build(:user)
+    user = Factory.build(:michael)
 
     {:ok, [user: user]}
   end
@@ -48,7 +48,7 @@ defmodule PhMicroblog.UserTest do
   end
 
   test "email addresses should be unique", %{user: user} do
-    Factory.create(:user, email: user.email)
+    Factory.create(:michael, email: user.email)
 
     assert {:error, _} = user |> User.changeset() |> Repo.insert()
   end
@@ -72,7 +72,7 @@ defmodule PhMicroblog.UserTest do
   end
 
   test "update without password should succeed", %{user: user} do
-    user = Factory.create(:user, email: user.email)
+    user = Factory.create(:michael, email: user.email)
 
     assert errors_on(user, %{name: "alex"}) == []
   end
