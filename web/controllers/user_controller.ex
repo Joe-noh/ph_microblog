@@ -24,7 +24,7 @@ defmodule PhMicroblog.UserController do
       {:ok, user} ->
         conn
         |> put_flash(:info, "Welcome to Sample App!")
-        |> redirect(to: user_path(conn, :show, user))
+        |> redirect_back_or(user_path(conn, :show, user))
       {:error, changeset} ->
         render conn, "new.html", title: "Sign up", changeset: changeset
     end
@@ -67,5 +67,13 @@ defmodule PhMicroblog.UserController do
     user = Repo.get!(User, conn.params["id"])
 
     conn |> assign(:user, user)
+  end
+
+  defp redirect_back_or(conn, default) do
+    path = RequireLogin.forwarding_path(conn) || default
+
+    conn
+    |> RequireLogin.delete_forwarding_path
+    |> redirect(to: path)
   end
 end
