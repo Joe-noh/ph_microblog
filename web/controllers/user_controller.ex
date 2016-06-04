@@ -4,10 +4,18 @@ defmodule PhMicroblog.UserController do
   alias PhMicroblog.{User, Repo}
   alias PhMicroblog.{RequireLogin, CorrectUser}
 
-  plug RequireLogin when action in [:edit, :update]
+  plug RequireLogin when action in [:index, :edit, :update]
   plug :scrub_params, "user" when action in [:create, :update]
   plug :set_user when action in [:show, :edit, :update]
   plug CorrectUser, [get_in: [:user]] when action in [:edit, :update]
+
+  def index(conn, _params) do
+    users = Repo.all(User)
+
+    conn
+    |> assign(:title, "All users")
+    |> render(users: users)
+  end
 
   def new(conn, _params) do
     changeset = User.changeset(%User{})
