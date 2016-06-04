@@ -12,6 +12,23 @@ defmodule PhMicroblog.UserControllerTest do
     {:ok, context}
   end
 
+  test "GET index", %{user: user} do
+    html = conn
+      |> assign(:current_user, user)
+      |> get(user_path(conn, :index))
+      |> html_response(200)
+
+    assert html |> Floki.find("title") |> Floki.text == "All users | Sample App"
+  end
+
+  test "GET index without login" do
+    conn = conn
+      |> assign(:current_user, nil)
+      |> get(user_path(conn, :index))
+
+    assert redirected_to(conn) == session_path(conn, :new)
+  end
+
   test "GET new" do
     html = conn
       |> get(user_path(conn, :new))
