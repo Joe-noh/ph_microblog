@@ -48,6 +48,8 @@ defmodule PhMicroblog.Mixfile do
 
       {:comeonin, "~> 2.4"},
 
+      {:faker, "~> 0.6.0", only: :dev},
+
       {:floki, "~> 0.8", only: :test},
       {:ex_machina, "~> 0.6.1", only: :test}
     ]

@@ -1,11 +1,24 @@
-# Script for populating the database. You can run it as:
-#
-#     mix run priv/repo/seeds.exs
-#
-# Inside the script, you can read and write to any of your
-# repositories directly:
-#
-#     PhMicroblog.Repo.insert!(%PhMicroblog.SomeModel{})
-#
-# We recommend using the bang functions (`insert!`, `update!`
-# and so on) as they will fail if something goes wrong.
+alias PhMicroblog.{User, Repo}
+
+defmodule Helper do
+  def insert_user!(name, email, password) do
+    params = %{
+      name: name,
+      email: email,
+      password: password,
+      password_confirmation: password
+    }
+
+    %User{} |> User.changeset(params) |> Repo.insert!
+  end
+end
+
+Faker.start
+
+Helper.insert_user!("Example User", "example@railstutorial.org", "foobar")
+
+Enum.each 1..99, fn i ->
+  spawn fn ->
+    Helper.insert_user!(Faker.Name.name, "example-#{i}@railstutorial.org", "password")
+  end
+end
