@@ -5,6 +5,7 @@ defmodule PhMicroblog.User do
     field :name, :string
     field :email, :string
     field :password_digest, :string
+    field :admin, :boolean, default: false
 
     field :password, :string, virtual: true
 

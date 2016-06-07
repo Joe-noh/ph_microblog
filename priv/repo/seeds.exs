@@ -1,7 +1,7 @@
 alias PhMicroblog.{User, Repo}
 
 defmodule Helper do
-  def insert_user!(name, email, password) do
+  def insert_user!(name, email, password, admin \\ false) do
     params = %{
       name: name,
       email: email,
@@ -9,13 +9,13 @@ defmodule Helper do
       password_confirmation: password
     }
 
-    %User{} |> User.changeset(params) |> Repo.insert!
+    %User{admin: admin} |> User.changeset(params) |> Repo.insert!
   end
 end
 
 Faker.start
 
-Helper.insert_user!("Example User", "example@railstutorial.org", "foobar")
+Helper.insert_user!("Example User", "example@railstutorial.org", "foobar", true)
 
 Enum.each 1..99, fn i ->
   spawn fn ->
