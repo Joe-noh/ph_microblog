@@ -7,7 +7,8 @@ defmodule PhMicroblog.Factory do
     %User{
       name: "John Doe",
       email: sequence(:email, &"user#{&1}@example.com"),
-      password_digest: Comeonin.Bcrypt.hashpwsalt("password")
+      password_digest: Comeonin.Bcrypt.hashpwsalt("password"),
+      admin: true
     }
   end
 
@@ -15,7 +16,8 @@ defmodule PhMicroblog.Factory do
     %User{
       name: "Sterling Archer",
       email: sequence(:email, &"user#{&1}@example.com"),
-      password_digest: Comeonin.Bcrypt.hashpwsalt("password")
+      password_digest: Comeonin.Bcrypt.hashpwsalt("password"),
+      admin: false
     }
   end
 end
