@@ -4,10 +4,11 @@ defmodule PhMicroblog.UserController do
   alias PhMicroblog.{User, Repo}
   alias PhMicroblog.{RequireLogin, CorrectUser}
 
-  plug RequireLogin when action in [:index, :edit, :update]
+  plug RequireLogin when action in [:index, :edit, :update, :delete]
   plug :scrub_params, "user" when action in [:create, :update]
-  plug :set_user when action in [:show, :edit, :update]
+  plug :set_user when action in [:show, :edit, :update, :delete]
   plug CorrectUser, [get_in: [:user]] when action in [:edit, :update]
+  plug :admin_only when action in [:delete]
 
   def index(conn, params) do
     page = User |> pagination(params["p"] || 1)
@@ -71,10 +72,26 @@ defmodule PhMicroblog.UserController do
     end
   end
 
+  def delete(conn, _params) do
+    Repo.delete!(conn.assigns.user)
+
+    conn
+    |> put_flash(:info, "User deleted")
+    |> redirect(to: user_path(conn, :index))
+  end
+
   defp set_user(conn, _opts) do
     user = Repo.get!(User, conn.params["id"])
 
     conn |> assign(:user, user)
+  end
+
+  defp admin_only(conn, _opts) do
+    if conn.assigns.current_user.admin do
+      conn
+    else
+      conn |> redirect(to: static_page_path(conn, :home)) |> halt
+    end
   end
 
   defp redirect_back_or(conn, default) do

@@ -124,4 +124,22 @@ defmodule PhMicroblog.UserControllerTest do
 
     assert redirected_to(conn) == static_page_path(conn, :home)
   end
+
+  test "DELETE delete", %{user: user, another_user: another} do
+    conn = conn
+      |> assign(:current_user, user)
+      |> delete(user_path(conn, :delete, another))
+
+    assert redirected_to(conn) == user_path(conn, :index)
+    assert Repo.get(User, another.id) == nil
+  end
+
+  test "DELETE delete by non-admin user", %{user: user, another_user: another} do
+    conn = conn
+      |> assign(:current_user, another)
+      |> delete(user_path(conn, :delete, user))
+
+    assert redirected_to(conn) == static_page_path(conn, :home)
+    assert Repo.get(User, user.id) != nil
+  end
 end
