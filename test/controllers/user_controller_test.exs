@@ -19,6 +19,8 @@ defmodule PhMicroblog.UserControllerTest do
       |> html_response(200)
 
     assert html |> Floki.find("title") |> Floki.text == "All users | Sample App"
+    assert html |> Floki.find(".previous") |> Enum.count == 2
+    assert html |> Floki.find(".next.disabled") |> Enum.count == 2
   end
 
   test "GET index without login" do
