@@ -9,12 +9,12 @@ defmodule PhMicroblog.UserController do
   plug :set_user when action in [:show, :edit, :update]
   plug CorrectUser, [get_in: [:user]] when action in [:edit, :update]
 
-  def index(conn, _params) do
-    users = Repo.all(User)
+  def index(conn, params) do
+    page = User |> pagination(params["p"] || 1)
 
     conn
     |> assign(:title, "All users")
-    |> render(users: users)
+    |> render(users: page.entries, page: page)
   end
 
   def new(conn, _params) do
@@ -83,5 +83,9 @@ defmodule PhMicroblog.UserController do
     conn
     |> RequireLogin.delete_forwarding_path
     |> redirect(to: path)
+  end
+
+  defp pagination(queryable, page_number) do
+    queryable |> Repo.paginate(page_size: 30, page: page_number)
   end
 end

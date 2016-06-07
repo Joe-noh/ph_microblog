@@ -1,0 +1,21 @@
+<nav>
+  <ul class="pager">
+    <% edge = @page.page_number == 1 %>
+    <% class = if edge, do: "previous disabled", else: "previous" %>
+
+    <li class="<%= class %>">
+      <%= link to: (if edge, do: "#", else: user_path(@conn, :index, p: @page.page_number-1)) do %>
+        <span aria-hidden="true">&larr;</span> Prev
+      <% end %>
+    </li>
+
+    <% edge = @page.page_number == @page.total_pages %>
+    <% class = if edge, do: "next disabled", else: "next" %>
+
+    <li class="<%= class %>">
+      <%= link to: (if edge, do: "#", else: user_path(@conn, :index, p: @page.page_number+1)) do %>
+        Next <span aria-hidden="true">&rarr;</span>
+      <% end %>
+    </li>
+  </ul>
+</nav>

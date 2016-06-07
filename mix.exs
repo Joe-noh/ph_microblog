@@ -47,6 +47,7 @@ defmodule PhMicroblog.Mixfile do
       {:cowboy, "~> 1.0"},
 
       {:comeonin, "~> 2.4"},
+      {:scrivener_ecto, github: "drewolson/scrivener_ecto"},
 
       {:faker, "~> 0.6.0", only: :dev},
 
