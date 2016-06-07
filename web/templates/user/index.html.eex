@@ -5,8 +5,14 @@
 <ul class="users">
   <%= for user <- @users do %>
     <li>
-      <%= tag :img, src: gravatar_url(user, 50) %>
-      <%= link user.name, to: user_path(@conn, :show, user) %>
+      <p class="pull-left">
+        <%= tag :img, src: gravatar_url(user, 50) %>
+        <%= link user.name, to: user_path(@conn, :show, user) %>
+      </p>
+      <%= if @current_user.admin && @current_user.id != user.id do %>
+        <%= link "delete", to: user_path(@conn, :delete, user),
+          method: :delete, data: [confirm: "You sure?"], class: "text-danger pull-right" %>
+      <% end %>
     </li>
   <% end %>
 </ul>
