@@ -9,6 +9,6 @@ defmodule PhMicroblog.Repo.Migrations.CreateMicropost do
       timestamps
     end
 
-    create index(:microposts, [:user_id])
+    create index(:microposts, [:user_id, :inserted_at])
   end
 end
