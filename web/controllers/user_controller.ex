@@ -40,11 +40,12 @@ defmodule PhMicroblog.UserController do
   end
 
   def show(conn, _params) do
-    user = conn.assigns.user
+    user = conn.assigns.user |> Repo.preload(:microposts)
+    microposts = user.microposts |> Repo.preload(:user)
 
     conn
     |> assign(:title, user.name)
-    |> render(user: user)
+    |> render(user: user, microposts: microposts)
   end
 
   def edit(conn, _params) do

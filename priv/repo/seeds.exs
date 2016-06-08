@@ -1,4 +1,7 @@
-alias PhMicroblog.{User, Repo}
+alias PhMicroblog.{User, Micropost, Repo}
+
+import Ecto
+import Ecto.Query
 
 defmodule Helper do
   def insert_user!(name, email, password, admin \\ false) do
@@ -17,8 +20,17 @@ Faker.start
 
 Helper.insert_user!("Example User", "example@railstutorial.org", "foobar", true)
 
-Enum.each 1..99, fn i ->
-  spawn fn ->
-    Helper.insert_user!(Faker.Name.name, "example-#{i}@railstutorial.org", "password")
+1..99
+|> Enum.map(&Task.async(Helper, :insert_user!, [Faker.Name.name, "example-#{&1}@railstutorial.org", "password"]))
+|> Enum.map(&Task.await/1)
+
+users = from(u in User, order_by: :inserted_at, limit: 6) |> Repo.all
+
+(for _ <- 1..50, user <- users, do: user)
+|> Enum.map(fn user ->
+  Task.async fn ->
+    content = Faker.Lorem.sentence(5)
+    user |> build_assoc(:microposts) |> Micropost.changeset(%{content: content}) |> Repo.insert!
   end
-end
+end)
+|> Enum.map(&Task.await/1)
