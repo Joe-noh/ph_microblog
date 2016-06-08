@@ -1,7 +1,7 @@
 defmodule PhMicroblog.UserTest do
   use PhMicroblog.ModelCase
 
-  alias PhMicroblog.{Factory, User}
+  alias PhMicroblog.{Factory, User, Micropost}
 
   setup do
     user = Factory.build(:michael)
@@ -75,5 +75,14 @@ defmodule PhMicroblog.UserTest do
     user = Factory.create(:michael, email: user.email)
 
     assert errors_on(user, %{name: "alex"}) == []
+  end
+
+  test "associated microposts should be destroyed", %{user: user} do
+    user = Repo.insert!(user)
+    micropost = Factory.create(:lorem, user: user)
+
+    Repo.delete(user)
+
+    assert Repo.get(Micropost, micropost.id) == nil
   end
 end

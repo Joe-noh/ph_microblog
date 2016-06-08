@@ -1,6 +1,8 @@
 defmodule PhMicroblog.User do
   use PhMicroblog.Web, :model
 
+  alias PhMicroblog.Micropost
+
   schema "users" do
     field :name, :string
     field :email, :string
@@ -8,6 +10,8 @@ defmodule PhMicroblog.User do
     field :admin, :boolean, default: false
 
     field :password, :string, virtual: true
+
+    has_many :microposts, Micropost, on_delete: :delete_all
 
     timestamps
   end
