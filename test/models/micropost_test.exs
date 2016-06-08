@@ -1,18 +1,38 @@
 defmodule PhMicroblog.MicropostTest do
   use PhMicroblog.ModelCase
 
-  alias PhMicroblog.Micropost
+  alias PhMicroblog.{Factory, Micropost}
 
-  @valid_attrs %{content: "some content"}
-  @invalid_attrs %{}
+  setup do
+    micropost = Factory.create(:lorem)
 
-  test "changeset with valid attributes" do
-    changeset = Micropost.changeset(%Micropost{}, @valid_attrs)
-    assert changeset.valid?
+    {:ok, [micropost: micropost]}
   end
 
-  test "changeset with invalid attributes" do
-    changeset = Micropost.changeset(%Micropost{}, @invalid_attrs)
-    refute changeset.valid?
+  test "content can't be blank", %{micropost: micropost} do
+    assert errors_on(micropost, %{content: ""})[:content]
+  end
+
+  test "content length can't be longer than 140", %{micropost: micropost} do
+    content = String.duplicate("a", 140)
+    refute errors_on(micropost, %{content: content})[:content]
+
+    content = String.duplicate("a", 141)
+    assert errors_on(micropost, %{content: content})[:content]
+  end
+
+  test "user_id can't be blank" do
+    params = Factory.fields_for(:lorem)
+
+    assert errors_on(%Micropost{user_id: nil}, params)[:user_id]
+  end
+
+  test "user should exist" do
+    params = Factory.fields_for(:lorem)
+    changeset = %Micropost{user_id: -1} |> Micropost.changeset(params)
+
+    assert_raise Ecto.InvalidChangesetError, fn ->
+      Repo.insert! changeset
+    end
   end
 end

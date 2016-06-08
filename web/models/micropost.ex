@@ -1,24 +1,23 @@
 defmodule PhMicroblog.Micropost do
   use PhMicroblog.Web, :model
 
+  alias PhMicroblog.User
+
   schema "microposts" do
     field :content, :string
-    belongs_to :user, PhMicroblog.User
+    belongs_to :user, User
 
     timestamps
   end
 
-  @required_fields ~w(content)
-  @optional_fields ~w()
+  @allowed ~w(content)
 
-  @doc """
-  Creates a changeset based on the `model` and `params`.
-
-  If no params are provided, an invalid changeset is returned
-  with no validation performed.
-  """
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, @allowed)
+    |> validate_required(:content)
+    |> validate_required(:user_id)
+    |> validate_length(:content, max: 140)
+    |> foreign_key_constraint(:user_id)
   end
 end
