@@ -1,6 +1,8 @@
 defmodule PhMicroblog.UserController do
   use PhMicroblog.Web, :controller
 
+  import Ecto.Query
+
   alias PhMicroblog.{User, Repo}
   alias PhMicroblog.{RequireLogin, CorrectUser}
 
@@ -41,7 +43,11 @@ defmodule PhMicroblog.UserController do
 
   def show(conn, _params) do
     user = conn.assigns.user |> Repo.preload(:microposts)
-    microposts = user.microposts |> Repo.preload(:user)
+    microposts = user
+      |> assoc(:microposts)
+      |> preload(:user)
+      |> order_by([m], {:desc, :inserted_at})
+      |> Repo.all
 
     conn
     |> assign(:title, user.name)
