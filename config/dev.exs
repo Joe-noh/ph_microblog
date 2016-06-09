@@ -40,3 +40,5 @@ config :ph_microblog, PhMicroblog.Repo,
   database: "ph_microblog_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :comeonin, :bcrypt_log_rounds, 4
