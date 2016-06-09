@@ -41,17 +41,17 @@ defmodule PhMicroblog.UserController do
     end
   end
 
-  def show(conn, _params) do
+  def show(conn, params) do
     user = conn.assigns.user |> Repo.preload(:microposts)
-    microposts = user
+    page = user
       |> assoc(:microposts)
       |> preload(:user)
       |> order_by([m], {:desc, :inserted_at})
-      |> Repo.all
+      |> pagination(params["p"] || 1)
 
     conn
     |> assign(:title, user.name)
-    |> render(user: user, microposts: microposts)
+    |> render(user: user, microposts: page.entries, page: page)
   end
 
   def edit(conn, _params) do

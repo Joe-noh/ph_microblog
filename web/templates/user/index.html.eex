@@ -1,6 +1,6 @@
 <h1>All users</h1>
 
-<%= render "pager.html", conn: @conn, page: @page %>
+<%= render "index_pager.html", conn: @conn, page: @page %>
 
 <ul class="users">
   <%= for user <- @users do %>
@@ -17,4 +17,4 @@
   <% end %>
 </ul>
 
-<%= render "pager.html", conn: @conn, page: @page %>
+<%= render "index_pager.html", conn: @conn, page: @page %>
