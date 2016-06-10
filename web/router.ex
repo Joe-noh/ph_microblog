@@ -29,6 +29,8 @@ defmodule PhMicroblog.Router do
     get    "login",  SessionController, :new
     post   "login",  SessionController, :create
     delete "logout", SessionController, :destroy
+
+    resources "/microposts", MicropostController, only: [:create, :delete]
   end
 
   # Other scopes may use custom stacks.

@@ -1,8 +1,11 @@
 defmodule PhMicroblog.StaticPageController do
   use PhMicroblog.Web, :controller
 
+  alias PhMicroblog.Micropost
+
   def home(conn, _params) do
-    render conn, "home.html"
+    changeset = Micropost.changeset(%Micropost{})
+    render conn, "home.html", micropost_changeset: changeset
   end
 
   def help(conn, _params) do
