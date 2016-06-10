@@ -56,22 +56,6 @@ defmodule PhMicroblog.User do
     |> order_by([m], desc: m.inserted_at)
   end
 
-  def gravatar_for(%{email: email}, size) do
-    "https://secure.gravatar.com/avatar/#{md5_digest(email)}?s=#{size}"
-  end
-
-  defp md5_digest(email) do
-    email
-    |> String.downcase
-    |> :erlang.md5
-    |> stringify_digest
-  end
-
-  defp stringify_digest(md5) do
-    parts = for <<c <- md5>>, do: c |> Integer.to_string(16) |> String.rjust(2, ?0)
-    parts |> List.flatten |> Enum.join |> String.downcase
-  end
-
   defp generate_digest(changeset) do
     password = get_field(changeset, :password, nil)
     if password != nil do

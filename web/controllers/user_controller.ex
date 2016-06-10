@@ -51,7 +51,7 @@ defmodule PhMicroblog.UserController do
 
     conn
     |> assign(:title, user.name)
-    |> render(user: user, microposts: page.entries, page: page)
+    |> render(user: user, page: page)
   end
 
   def edit(conn, _params) do

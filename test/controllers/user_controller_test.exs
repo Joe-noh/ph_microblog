@@ -40,7 +40,7 @@ defmodule PhMicroblog.UserControllerTest do
       |> assign(:current_user, user)
       |> get(user_path(conn, :show, user))
 
-    assert conn.assigns.microposts == [p3, p2, p1]
+    assert conn.assigns.page.entries == [p3, p2, p1]
   end
 
   test "GET new" do

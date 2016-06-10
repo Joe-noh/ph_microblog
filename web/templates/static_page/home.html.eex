@@ -19,24 +19,10 @@
         <% end %>
       </section>
     </aside>
-    <%= if Enum.any?(@feed) do %>
+    <%= if Enum.any?(@page.entries) do %>
       <div class="col-md-8">
         <h3>Micropost feed</h3>
-        <ol class="microposts">
-          <%= Enum.map @feed, fn micropost -> %>
-            <li id="micropost-<%= micropost.id %>">
-              <%= link to: user_path(@conn, :show, micropost.user) do %>
-                <%= tag :img, src: gravatar_url(micropost.user, 50), class: "avatar" %>
-              <% end %>
-              <span class="user"><%= link micropost.user.name, to: user_path(@conn, :show, micropost.user) %></span>
-              <span class="content"><%= micropost.content %></span>
-              <span class="timestamp">
-                Posted at <%= micropost.inserted_at %>
-              </span>
-            </li>
-          <% end %>
-        </ol>
-        <%= render SharedView, "pager.html", conn: @conn, page: @page %>
+        <%= render SharedView, "feed.html", conn: @conn, page: @page %>
       </div>
     <% end %>
   </div>
