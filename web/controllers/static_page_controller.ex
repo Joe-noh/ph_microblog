@@ -11,7 +11,7 @@ defmodule PhMicroblog.StaticPageController do
         changeset = Micropost.changeset(%Micropost{})
         page = current_user
           |> User.feed
-          |> Pager.paginate(page: params["p"])
+          |> Pager.paginate(page_number: params["p"])
 
         render conn, "home.html", micropost_changeset: changeset, feed: page.entries, page: page
     end

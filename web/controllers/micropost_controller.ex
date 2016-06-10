@@ -20,7 +20,7 @@ defmodule PhMicroblog.MicropostController do
       {:error, changeset} ->
         page = conn.assigns.current_user
           |> User.feed
-          |> Pager.paginate(page: params["p"])
+          |> Pager.paginate(page_number: params["p"])
 
         conn
         |> assign(:micropost_changeset, changeset)

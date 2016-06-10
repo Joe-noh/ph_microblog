@@ -13,7 +13,7 @@ defmodule PhMicroblog.UserController do
   plug :admin_only when action in [:delete]
 
   def index(conn, params) do
-    page = User |> Pager.paginate(page: params["p"])
+    page = User |> Pager.paginate(page_number: params["p"])
 
     conn
     |> assign(:title, "All users")
@@ -47,7 +47,7 @@ defmodule PhMicroblog.UserController do
       |> assoc(:microposts)
       |> preload(:user)
       |> order_by([m], {:desc, :inserted_at})
-      |> Pager.paginate(params["p"])
+      |> Pager.paginate(page_number: params["p"])
 
     conn
     |> assign(:title, user.name)
