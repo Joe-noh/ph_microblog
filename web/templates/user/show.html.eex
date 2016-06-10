@@ -24,7 +24,7 @@
           </li>
         <% end %>
       </ol>
-      <%= render "show_pager.html", conn: @conn, user: @user, page: @page %>
+      <%= render SharedView, "pager.html", conn: @conn, page: @page %>
     <% end %>
   </div>
 </div>

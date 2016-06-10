@@ -52,6 +52,8 @@ defmodule PhMicroblog.Web do
       import PhMicroblog.Router.Helpers
       import PhMicroblog.ErrorHelpers
       import PhMicroblog.Gettext
+
+      alias PhMicroblog.SharedView
     end
   end
 

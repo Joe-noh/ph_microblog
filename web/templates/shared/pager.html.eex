@@ -1,0 +1,15 @@
+<nav>
+  <ul class="pager">
+    <li class='<%= if Pager.first_page?(@page), do: "previous disabled", else: "previous" %>'>
+      <%= link to: Pager.prev_page_path(@conn, @page) do %>
+        <span aria-hidden="true">&larr;</span> Prev
+      <% end %>
+    </li>
+
+    <li class='<%= if Pager.last_page?(@page), do: "next disabled", else: "next" %>'>
+      <%= link to: Pager.next_page_path(@conn, @page) do %>
+        Next <span aria-hidden="true">&rarr;</span>
+      <% end %>
+    </li>
+  </ul>
+</nav>
