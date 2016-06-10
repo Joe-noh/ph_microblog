@@ -9,7 +9,7 @@ defmodule PhMicroblog.UserController do
   plug RequireLogin when action in [:index, :edit, :update, :delete]
   plug :scrub_params, "user" when action in [:create, :update]
   plug :set_user when action in [:show, :edit, :update, :delete]
-  plug CorrectUser, [get_in: [:user]] when action in [:edit, :update]
+  plug CorrectUser, [accessor: [:user]] when action in [:edit, :update]
   plug :admin_only when action in [:delete]
 
   def index(conn, params) do
