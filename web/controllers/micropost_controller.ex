@@ -2,14 +2,14 @@ defmodule PhMicroblog.MicropostController do
   use PhMicroblog.Web, :controller
 
   import Ecto.Query
-  alias PhMicroblog.Micropost
+  alias PhMicroblog.{Micropost, User}
 
   plug PhMicroblog.RequireLogin
   plug :scrub_params, "micropost" when action == :create
   plug :set_micropost when action == :delete
   plug PhMicroblog.CorrectUser, [accessor: [:micropost, :user]] when action == :delete
 
-  def create(conn, %{"micropost" => micropost_params}) do
+  def create(conn, params = %{"micropost" => micropost_params}) do
     changeset = conn.assigns.current_user
       |> build_assoc(:microposts)
       |> Micropost.changeset(micropost_params)
@@ -18,9 +18,15 @@ defmodule PhMicroblog.MicropostController do
       {:ok, post} ->
         conn |> redirect(to: static_page_path(conn, :home))
       {:error, changeset} ->
+        page = conn.assigns.current_user
+          |> User.feed
+          |> pagination(params["p"] || 1)
+
         conn
         |> assign(:micropost_changeset, changeset)
-        |> render PhMicroblog.StaticPageView, "home.html"
+        |> assign(:feed, page.entries)
+        |> assign(:page, page)
+        |> render(PhMicroblog.StaticPageView, "home.html")
     end
   end
 
@@ -39,5 +45,9 @@ defmodule PhMicroblog.MicropostController do
       |> Repo.one
 
     conn |> assign(:micropost, post)
+  end
+
+  defp pagination(queryable, page_number) do
+    queryable |> Repo.paginate(page_size: 30, page: page_number)
   end
 end

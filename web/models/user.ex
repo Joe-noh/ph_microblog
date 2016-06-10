@@ -1,6 +1,7 @@
 defmodule PhMicroblog.User do
   use PhMicroblog.Web, :model
 
+  import Ecto.Query
   alias PhMicroblog.Micropost
 
   schema "users" do
@@ -46,6 +47,13 @@ defmodule PhMicroblog.User do
     else
       :error
     end
+  end
+
+  def feed(user) do
+    user
+    |> assoc(:microposts)
+    |> preload([m], :user)
+    |> order_by([m], desc: m.inserted_at)
   end
 
   def gravatar_for(%{email: email}, size) do
