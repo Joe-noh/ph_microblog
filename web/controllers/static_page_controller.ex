@@ -13,7 +13,7 @@ defmodule PhMicroblog.StaticPageController do
           |> User.feed
           |> Pager.paginate(page_number: params["p"])
 
-        render conn, "home.html", micropost_changeset: changeset, feed: page.entries, page: page
+        render conn, "home.html", micropost_changeset: changeset, page: page
     end
   end
 

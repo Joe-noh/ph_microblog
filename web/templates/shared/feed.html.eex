@@ -9,6 +9,10 @@
       <span class="timestamp">
         Posted at <%= micropost.inserted_at %>
       </span>
+      <%= if current_user?(@conn, micropost.user) do %>
+        <%= link "delete", to: micropost_path(@conn, :delete, micropost), method: :delete, data: [confirm: "You sure?"],
+        form: [style: "display: inline;"] %>
+      <% end %>
     </li>
   <% end %>
 </ol>

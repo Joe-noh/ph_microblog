@@ -16,7 +16,7 @@
               <li><%= link "Settings", to: user_path(@conn, :edit, @conn.assigns.current_user) %></li>
               <li class="divider"></li>
               <li>
-                <%= link "Log out", to: session_path(@conn, :destroy), method: :delete %>
+                <%= link "Log out", to: session_path(@conn, :destroy), method: :delete, form: [class: "logout"] %>
               </li>
             </ul>
           </li>

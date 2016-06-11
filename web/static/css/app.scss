@@ -76,7 +76,7 @@ p {
   }
 }
 
-nav form > a {
+nav form.logout > a {
   padding-left: 20px;
   padding-right: 20px;
   line-height: 20px;
@@ -214,8 +214,8 @@ input {
   }
   .timestamp {
     color: $gray-light;
-    display: block;
-    margin-left: 60px;
+    display: inline-block;
+    margin-left: 10px;
   }
   .gravatar {
     float: left;

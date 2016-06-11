@@ -24,7 +24,6 @@ defmodule PhMicroblog.MicropostController do
 
         conn
         |> assign(:micropost_changeset, changeset)
-        |> assign(:feed, page.entries)
         |> assign(:page, page)
         |> render(PhMicroblog.StaticPageView, "home.html")
     end
@@ -33,7 +32,9 @@ defmodule PhMicroblog.MicropostController do
   def delete(conn, _params) do
     conn.assigns.micropost |> Repo.delete!
 
-    conn |> redirect(to: static_page_path(conn, :home))
+    conn
+    |> put_flash(:info, "Micropost deleted")
+    |> redirect(to: static_page_path(conn, :home))
   end
 
   defp set_micropost(conn, _opts) do
