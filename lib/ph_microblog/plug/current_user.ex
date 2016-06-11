@@ -24,7 +24,7 @@ defmodule PhMicroblog.Plug.CurrentUser do
   defp fetch_user(conn, id) do
     case Repo.get(User, id) do
       nil  -> conn
-      user -> {:ok, Repo.preload(user, :microposts)}
+      user -> {:ok, user}
     end
   end
 end

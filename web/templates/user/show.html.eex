@@ -9,7 +9,7 @@
   </aside>
   <div class="col-md-8">
     <%= if Enum.any?(@page.entries) do %>
-      <h3>Microposts (<%= Enum.count @user.microposts %>)</h3>
+      <h3>Microposts (<%= @page.total_entries %>)</h3>
       <%= render SharedView, "feed.html", conn: @conn, page: @page %>
     <% end %>
   </div>

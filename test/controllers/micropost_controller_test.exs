@@ -24,7 +24,7 @@ defmodule PhMicroblog.MicropostControllerTest do
     params = Factory.fields_for(:lorem, content: "")
 
     html = conn
-      |> assign(:current_user, Repo.preload(user, :microposts))
+      |> assign(:current_user, user)
       |> post(micropost_path(conn, :create), micropost: params)
       |> html_response(200)
 

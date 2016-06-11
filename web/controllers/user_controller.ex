@@ -42,7 +42,7 @@ defmodule PhMicroblog.UserController do
   end
 
   def show(conn, params) do
-    user = conn.assigns.user |> Repo.preload(:microposts)
+    user = conn.assigns.user
     page = user
       |> assoc(:microposts)
       |> preload(:user)
