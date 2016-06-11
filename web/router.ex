@@ -24,7 +24,10 @@ defmodule PhMicroblog.Router do
     get "static_pages/contact", StaticPageController, :contact
 
     get "signup", UserController, :new
-    resources "/users", UserController, except: [:new]
+    resources "/users", UserController, except: [:new] do
+      get "/following", UserController, :following
+      get "/followers", UserController, :followers
+    end
 
     get    "login",  SessionController, :new
     post   "login",  SessionController, :create

@@ -1,0 +1,41 @@
+<div class="row">
+  <aside class="col-md-4">
+    <section class="user_info">
+      <%= tag :img, src: gravatar_url(@user) %>
+      <h1><%= @user.name %></h1>
+      <span><%= link "view my profile", to: user_path(@conn, :show, @user) %></span>
+      <span><b>Microposts:</b> <%= Enum.count @user.microposts %></span>
+    </section>
+    <section class="stats">
+      <%= if Enum.any?(@page.entries) do %>
+        <div class="user_avatars">
+          <% for user <- @page.entries do %>
+            <%= link to: user_path(@conn, :show, user) do %>
+              <%= tag :img, src: gravatar_url(user, 30) %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </section>
+  </aside>
+  <div class="col-md-8">
+    <h3><%= @title %></h3>
+    <%= if Enum.any?(@page.entries) do %>
+      <ul class="users follow">
+        <%= for user <- @page.entries do %>
+          <li>
+            <p class="pull-left">
+              <%= tag :img, src: gravatar_url(user, 50) %>
+              <%= link user.name, to: user_path(@conn, :show, user) %>
+            </p>
+            <%= if @current_user.admin && @current_user.id != user.id do %>
+              <%= link "delete", to: user_path(@conn, :delete, user),
+                method: :delete, data: [confirm: "You sure?"], class: "text-danger pull-right" %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+      <%= render SharedView, "pager.html", conn: @conn, page: @page %>
+    <% end %>
+  </div>
+</div>

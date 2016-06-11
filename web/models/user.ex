@@ -2,7 +2,7 @@ defmodule PhMicroblog.User do
   use PhMicroblog.Web, :model
 
   import Ecto.Query
-  alias PhMicroblog.Micropost
+  alias PhMicroblog.{Micropost, Relationship}
 
   schema "users" do
     field :name, :string
@@ -13,6 +13,16 @@ defmodule PhMicroblog.User do
     field :password, :string, virtual: true
 
     has_many :microposts, Micropost, on_delete: :delete_all
+
+    has_many :active_relationships, Relationship,
+      foreign_key: :follower_id,
+      on_delete: :delete_all
+    has_many :following, through: [:active_relationships, :followed]
+
+    has_many :passive_relationships, Relationship,
+      foreign_key: :followed_id,
+      on_delete: :delete_all
+    has_many :followers, through: [:passive_relationships, :follower]
 
     timestamps
   end

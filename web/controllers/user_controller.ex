@@ -8,7 +8,7 @@ defmodule PhMicroblog.UserController do
 
   plug RequireLogin when action in [:index, :edit, :update, :delete]
   plug :scrub_params, "user" when action in [:create, :update]
-  plug :set_user when action in [:show, :edit, :update, :delete]
+  plug :set_user when action in [:show, :edit, :update, :delete, :following, :followers]
   plug CorrectUser, [accessor: [:user]] when action in [:edit, :update]
   plug :admin_only when action in [:delete]
 
@@ -17,7 +17,7 @@ defmodule PhMicroblog.UserController do
 
     conn
     |> assign(:title, "All users")
-    |> render(users: page.entries, page: page)
+    |> render(page: page)
   end
 
   def new(conn, _params) do
@@ -87,8 +87,25 @@ defmodule PhMicroblog.UserController do
     |> redirect(to: user_path(conn, :index))
   end
 
+  def following(conn, params) do
+    page = conn.assigns.user
+      |> assoc(:following)
+      |> Pager.paginate(page_number: params["p"])
+
+    render conn, "show_follow.html", page: page, title: "Following"
+  end
+
+  def followers(conn, params) do
+    page = conn.assigns.user
+      |> assoc(:followers)
+      |> Pager.paginate(page_number: params["p"])
+
+    render conn, "show_follow.html", page: page, title: "Followers"
+  end
+
   defp set_user(conn, _opts) do
-    user = Repo.get!(User, conn.params["id"])
+    user = Repo.get!(User, conn.params["id"] || conn.params["user_id"])
+      |> Repo.preload(:microposts)
 
     conn |> assign(:user, user)
   end
