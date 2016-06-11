@@ -1,7 +1,7 @@
-defmodule PhMicroblog.LayoutViewTest do
+defmodule PhMicroblog.ViewHelpersTest do
   use PhMicroblog.ConnCase, async: true
 
-  alias PhMicroblog.LayoutView, as: V
+  alias PhMicroblog.ViewHelpers, as: V
 
   test "full_title/1" do
     assert V.full_title(nil) == "Sample App"
