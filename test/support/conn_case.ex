@@ -46,9 +46,13 @@ defmodule PhMicroblog.ConnCase do
     end
   end
 
-  setup _tags do
+  setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(PhMicroblog.Repo)
 
-    {:ok, conn: Phoenix.ConnTest.conn()}
+    unless tags[:async] do
+      Ecto.Adapters.SQL.Sandbox.mode(PhMicroblog.Repo, {:shared, self()})
+    end
+
+    {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end

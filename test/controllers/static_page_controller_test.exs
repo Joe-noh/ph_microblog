@@ -2,7 +2,7 @@ defmodule PhMicroblog.StaticPageControllerTest do
   use PhMicroblog.ConnCase
 
   test "GET home", %{conn: conn} do
-    html = conn
+    html = build_conn()
       |> get(static_page_path conn, :home)
       |> html_response(200)
 
@@ -10,7 +10,7 @@ defmodule PhMicroblog.StaticPageControllerTest do
   end
 
   test "GET help", %{conn: conn} do
-    html = conn
+    html = build_conn()
       |> get(static_page_path conn, :help)
       |> html_response(200)
 
@@ -18,7 +18,7 @@ defmodule PhMicroblog.StaticPageControllerTest do
   end
 
   test "GET about", %{conn: conn} do
-    html = conn
+    html = build_conn()
       |> get(static_page_path conn, :about)
       |> html_response(200)
 
@@ -26,7 +26,7 @@ defmodule PhMicroblog.StaticPageControllerTest do
   end
 
   test "GET contact", %{conn: conn} do
-    html = conn
+    html = build_conn()
       |> get(static_page_path conn, :contact)
       |> html_response(200)
 
