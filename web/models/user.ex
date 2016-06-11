@@ -2,7 +2,7 @@ defmodule PhMicroblog.User do
   use PhMicroblog.Web, :model
 
   import Ecto.Query
-  alias PhMicroblog.{Micropost, Relationship}
+  alias PhMicroblog.{Micropost, Relationship, Repo}
 
   schema "users" do
     field :name, :string
@@ -64,6 +64,20 @@ defmodule PhMicroblog.User do
     |> assoc(:microposts)
     |> preload([m], :user)
     |> order_by([m], desc: m.inserted_at)
+  end
+
+  def following_count(user) do
+    user
+    |> assoc(:following)
+    |> select([f], count(f.id))
+    |> Repo.one
+  end
+
+  def followers_count(user) do
+    user
+    |> assoc(:followers)
+    |> select([f], count(f.id))
+    |> Repo.one
   end
 
   defp generate_digest(changeset) do

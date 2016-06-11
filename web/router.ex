@@ -25,8 +25,8 @@ defmodule PhMicroblog.Router do
 
     get "signup", UserController, :new
     resources "/users", UserController, except: [:new] do
-      get "/following", UserController, :following
-      get "/followers", UserController, :followers
+      get "/following", UserController, :following, as: :relationship
+      get "/followers", UserController, :followers, as: :relationship
     end
 
     get    "login",  SessionController, :new

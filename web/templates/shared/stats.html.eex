@@ -1,0 +1,14 @@
+<div class="stats">
+  <%= link to: user_relationship_path(@conn, :following, @user) do %>
+    <strong id="following" class="stat">
+      <%= PhMicroblog.User.following_count(@user) %>
+    </strong>
+    following
+  <% end %>
+  <%= link to: user_relationship_path(@conn, :followers, @user) do %>
+    <strong id="followers" class="stat">
+      <%= PhMicroblog.User.followers_count(@user) %>
+    </strong>
+    followers
+  <% end %>
+</div>
