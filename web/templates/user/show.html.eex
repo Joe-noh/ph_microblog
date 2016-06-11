@@ -11,7 +11,7 @@
     <%= if logged_in?(@conn) do %>
       <%= render "follow_form.html", conn: @conn, current_user: @current_user, user: @user %>
     <% end %>
-    <%= if Enum.any?(@page.entries) do %>
+    <%= if @page.total_entries > 0 do %>
       <h3>Microposts (<%= @page.total_entries %>)</h3>
       <%= render SharedView, "feed.html", conn: @conn, page: @page %>
     <% end %>

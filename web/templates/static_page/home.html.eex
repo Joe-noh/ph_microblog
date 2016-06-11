@@ -11,7 +11,7 @@
         <%= render SharedView, "micropost_form.html", conn: @conn, changeset: @micropost_changeset %>
       </section>
     </aside>
-    <%= if Enum.any?(@page.entries) do %>
+    <%= if @page.total_entries > 0 do %>
       <div class="col-md-8">
         <h3>Micropost feed</h3>
         <%= render SharedView, "feed.html", conn: @conn, page: @page %>

@@ -7,9 +7,9 @@
       <span><b>Microposts:</b> <%= Enum.count @user.microposts %></span>
     </section>
     <section class="stats">
-      <%= if Enum.any?(@page.entries) do %>
+      <%= if @page.total_entries > 0 do %>
         <div class="user_avatars">
-          <% for user <- @page.entries do %>
+          <%= for user <- @page.entries do %>
             <%= link to: user_path(@conn, :show, user) do %>
               <%= tag :img, src: gravatar_url(user, 30) %>
             <% end %>
@@ -20,7 +20,7 @@
   </aside>
   <div class="col-md-8">
     <h3><%= @title %></h3>
-    <%= if Enum.any?(@page.entries) do %>
+    <%= if @page.total_entries > 0 do %>
       <ul class="users follow">
         <%= for user <- @page.entries do %>
           <li>
