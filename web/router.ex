@@ -34,6 +34,7 @@ defmodule PhMicroblog.Router do
     delete "logout", SessionController, :destroy
 
     resources "/microposts", MicropostController, only: [:create, :delete]
+    resources "/relationships", RelationshipController, only: [:create, :delete]
   end
 
   # Other scopes may use custom stacks.

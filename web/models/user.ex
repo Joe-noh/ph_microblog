@@ -66,6 +66,10 @@ defmodule PhMicroblog.User do
     |> order_by([m], desc: m.inserted_at)
   end
 
+  def following?(user, other) do
+    user |> assoc(:following) |> Repo.get(other.id) != nil
+  end
+
   def following_count(user) do
     user
     |> assoc(:following)

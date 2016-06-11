@@ -32,7 +32,7 @@ defmodule PhMicroblog.Web do
 
       alias PhMicroblog.Repo
       import Ecto
-      import Ecto.Query, only: [from: 1, from: 2]
+      import Ecto.Query
 
       import PhMicroblog.Router.Helpers
       import PhMicroblog.Gettext
