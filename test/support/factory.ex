@@ -1,7 +1,7 @@
 defmodule PhMicroblog.Factory do
   use ExMachina.Ecto, repo: PhMicroblog.Repo
 
-  alias PhMicroblog.{User, Micropost}
+  alias PhMicroblog.{User, Micropost, Relationship}
 
   def factory(:michael) do
     %User{
@@ -25,6 +25,13 @@ defmodule PhMicroblog.Factory do
     %Micropost{
       content: "Lorem ipsum",
       user: build(:michael)
+    }
+  end
+
+  def factory(:relationship) do
+    %Relationship{
+      follower: build(:michael),
+      followed: build(:archer)
     }
   end
 end

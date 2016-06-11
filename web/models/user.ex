@@ -2,7 +2,7 @@ defmodule PhMicroblog.User do
   use PhMicroblog.Web, :model
 
   import Ecto.Query
-  alias PhMicroblog.Micropost
+  alias PhMicroblog.{Micropost, Relationship, Repo}
 
   schema "users" do
     field :name, :string
@@ -13,6 +13,16 @@ defmodule PhMicroblog.User do
     field :password, :string, virtual: true
 
     has_many :microposts, Micropost, on_delete: :delete_all
+
+    has_many :active_relationships, Relationship,
+      foreign_key: :follower_id,
+      on_delete: :delete_all
+    has_many :following, through: [:active_relationships, :followed]
+
+    has_many :passive_relationships, Relationship,
+      foreign_key: :followed_id,
+      on_delete: :delete_all
+    has_many :followers, through: [:passive_relationships, :follower]
 
     timestamps
   end
@@ -50,10 +60,31 @@ defmodule PhMicroblog.User do
   end
 
   def feed(user) do
-    user
-    |> assoc(:microposts)
+    following_ids = user |> assoc(:following) |> Repo.all |> Enum.map(& &1.id)
+    targets = [user.id | following_ids]
+
+    Micropost
+    |> where([m], m.user_id in ^targets)
     |> preload([m], :user)
     |> order_by([m], desc: m.inserted_at)
+  end
+
+  def following?(user, other) do
+    user |> assoc(:following) |> Repo.get(other.id) != nil
+  end
+
+  def following_count(user) do
+    user
+    |> assoc(:following)
+    |> select([f], count(f.id))
+    |> Repo.one
+  end
+
+  def followers_count(user) do
+    user
+    |> assoc(:followers)
+    |> select([f], count(f.id))
+    |> Repo.one
   end
 
   defp generate_digest(changeset) do

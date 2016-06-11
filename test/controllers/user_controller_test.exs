@@ -154,4 +154,38 @@ defmodule PhMicroblog.UserControllerTest do
     assert redirected_to(conn) == static_page_path(conn, :home)
     assert Repo.get(User, user.id) != nil
   end
+
+  test "GET following", %{user: user} do
+    html = conn
+      |> assign(:current_user, user)
+      |> get(user_relationship_path(conn, :following, user))
+      |> html_response(200)
+
+    assert html |> Floki.find("title") |> Floki.text == "Following | Sample App"
+  end
+
+  test "GET following without login", %{user: user} do
+    conn = conn
+      |> assign(:current_user, nil)
+      |> get(user_relationship_path(conn, :following, user))
+
+    assert redirected_to(conn) == session_path(conn, :new)
+  end
+
+  test "GET followers", %{user: user} do
+    html = conn
+      |> assign(:current_user, user)
+      |> get(user_relationship_path(conn, :followers, user))
+      |> html_response(200)
+
+    assert html |> Floki.find("title") |> Floki.text == "Followers | Sample App"
+  end
+
+  test "GET followers without login", %{user: user} do
+    conn = conn
+      |> assign(:current_user, nil)
+      |> get(user_relationship_path(conn, :followers, user))
+
+    assert redirected_to(conn) == session_path(conn, :new)
+  end
 end

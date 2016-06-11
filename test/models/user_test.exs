@@ -85,4 +85,20 @@ defmodule PhMicroblog.UserTest do
 
     assert Repo.get(Micropost, micropost.id) == nil
   end
+
+  test "feed/1" do
+    michael = Factory.create(:michael)
+    archer  = Factory.create(:archer)
+
+    michael_post = Factory.create(:lorem, user: michael)
+    archer_post  = Factory.create(:lorem, user: archer)
+
+    refute michael_post in Repo.all(User.feed archer)
+    refute archer_post  in Repo.all(User.feed michael)
+
+    Factory.create(:relationship, follower: michael, followed: archer)
+
+    refute michael_post in Repo.all(User.feed archer)
+    assert archer_post  in Repo.all(User.feed michael)
+  end
 end

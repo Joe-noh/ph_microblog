@@ -3,7 +3,7 @@
 <%= render SharedView, "pager.html", conn: @conn, page: @page %>
 
 <ul class="users">
-  <%= for user <- @users do %>
+  <%= for user <- @page.entries do %>
     <li>
       <p class="pull-left">
         <%= tag :img, src: gravatar_url(user, 50) %>
