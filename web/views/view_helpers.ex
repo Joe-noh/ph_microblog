@@ -8,6 +8,10 @@ defmodule PhMicroblog.ViewHelpers do
     !is_nil(conn.assigns[:current_user])
   end
 
+  def current_user?(conn, user) do
+    logged_in?(conn) && conn.assigns.current_user.id == user.id
+  end
+
   def gravatar_url(%{email: email}, size \\ 80) do
     "https://secure.gravatar.com/avatar/#{md5_digest(email)}?s=#{size}"
   end
