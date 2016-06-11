@@ -60,8 +60,11 @@ defmodule PhMicroblog.User do
   end
 
   def feed(user) do
-    user
-    |> assoc(:microposts)
+    following_ids = user |> assoc(:following) |> Repo.all |> Enum.map(& &1.id)
+    targets = [user.id | following_ids]
+
+    Micropost
+    |> where([m], m.user_id in ^targets)
     |> preload([m], :user)
     |> order_by([m], desc: m.inserted_at)
   end
