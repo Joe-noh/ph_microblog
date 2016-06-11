@@ -1,6 +1,9 @@
 defmodule PhMicroblog.User do
   use PhMicroblog.Web, :model
 
+  import Ecto.Query
+  alias PhMicroblog.Micropost
+
   schema "users" do
     field :name, :string
     field :email, :string
@@ -8,6 +11,8 @@ defmodule PhMicroblog.User do
     field :admin, :boolean, default: false
 
     field :password, :string, virtual: true
+
+    has_many :microposts, Micropost, on_delete: :delete_all
 
     timestamps
   end
@@ -44,20 +49,11 @@ defmodule PhMicroblog.User do
     end
   end
 
-  def gravatar_for(%{email: email}, size) do
-    "https://secure.gravatar.com/avatar/#{md5_digest(email)}?s=#{size}"
-  end
-
-  defp md5_digest(email) do
-    email
-    |> String.downcase
-    |> :erlang.md5
-    |> stringify_digest
-  end
-
-  defp stringify_digest(md5) do
-    parts = for <<c <- md5>>, do: c |> Integer.to_string(16) |> String.rjust(2, ?0)
-    parts |> List.flatten |> Enum.join |> String.downcase
+  def feed(user) do
+    user
+    |> assoc(:microposts)
+    |> preload([m], :user)
+    |> order_by([m], desc: m.inserted_at)
   end
 
   defp generate_digest(changeset) do

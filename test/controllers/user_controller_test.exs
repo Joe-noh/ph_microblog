@@ -31,6 +31,18 @@ defmodule PhMicroblog.UserControllerTest do
     assert redirected_to(conn) == session_path(conn, :new)
   end
 
+  test "GET show microposts are sorted", %{user: user} do
+    p1 = Factory.create(:lorem, user: user, inserted_at: Ecto.DateTime.cast!("2014-04-01T12:00:00Z"))
+    p2 = Factory.create(:lorem, user: user, inserted_at: Ecto.DateTime.cast!("2014-04-04T12:00:00Z"))
+    p3 = Factory.create(:lorem, user: user, inserted_at: Ecto.DateTime.cast!("2014-04-08T12:00:00Z"))
+
+    conn = conn
+      |> assign(:current_user, user)
+      |> get(user_path(conn, :show, user))
+
+    assert conn.assigns.page.entries == [p3, p2, p1]
+  end
+
   test "GET new" do
     html = conn
       |> get(user_path(conn, :new))

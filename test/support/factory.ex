@@ -1,7 +1,7 @@
 defmodule PhMicroblog.Factory do
   use ExMachina.Ecto, repo: PhMicroblog.Repo
 
-  alias PhMicroblog.{User}
+  alias PhMicroblog.{User, Micropost}
 
   def factory(:michael) do
     %User{
@@ -18,6 +18,13 @@ defmodule PhMicroblog.Factory do
       email: sequence(:email, &"user#{&1}@example.com"),
       password_digest: Comeonin.Bcrypt.hashpwsalt("password"),
       admin: false
+    }
+  end
+
+  def factory(:lorem) do
+    %Micropost{
+      content: "Lorem ipsum",
+      user: build(:michael)
     }
   end
 end

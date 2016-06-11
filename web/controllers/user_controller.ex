@@ -1,17 +1,19 @@
 defmodule PhMicroblog.UserController do
   use PhMicroblog.Web, :controller
 
-  alias PhMicroblog.{User, Repo}
+  import Ecto.Query
+
+  alias PhMicroblog.{User, Repo, Pager}
   alias PhMicroblog.{RequireLogin, CorrectUser}
 
   plug RequireLogin when action in [:index, :edit, :update, :delete]
   plug :scrub_params, "user" when action in [:create, :update]
   plug :set_user when action in [:show, :edit, :update, :delete]
-  plug CorrectUser, [get_in: [:user]] when action in [:edit, :update]
+  plug CorrectUser, [accessor: [:user]] when action in [:edit, :update]
   plug :admin_only when action in [:delete]
 
   def index(conn, params) do
-    page = User |> pagination(params["p"] || 1)
+    page = User |> Pager.paginate(page_number: params["p"])
 
     conn
     |> assign(:title, "All users")
@@ -39,12 +41,17 @@ defmodule PhMicroblog.UserController do
     end
   end
 
-  def show(conn, _params) do
+  def show(conn, params) do
     user = conn.assigns.user
+    page = user
+      |> assoc(:microposts)
+      |> preload(:user)
+      |> order_by([m], {:desc, :inserted_at})
+      |> Pager.paginate(page_number: params["p"])
 
     conn
     |> assign(:title, user.name)
-    |> render(user: user)
+    |> render(user: user, page: page)
   end
 
   def edit(conn, _params) do
@@ -100,9 +107,5 @@ defmodule PhMicroblog.UserController do
     conn
     |> RequireLogin.delete_forwarding_path
     |> redirect(to: path)
-  end
-
-  defp pagination(queryable, page_number) do
-    queryable |> Repo.paginate(page_size: 30, page: page_number)
   end
 end

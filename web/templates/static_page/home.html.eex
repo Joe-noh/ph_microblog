@@ -1,15 +1,34 @@
-<div class="center jumbotron">
-  <h1>Welcome to the Sample App</h1>
+<%= if logged_in?(@conn) do %>
+  <div class="row">
+    <aside class="col-md-4">
+      <section class="user_info">
+        <%= render SharedView, "user_info.html", conn: @conn, user: @current_user, page: @page %>
+      </section>
+      <section class="micropost_form">
+        <%= render SharedView, "micropost_form.html", conn: @conn, changeset: @micropost_changeset %>
+      </section>
+    </aside>
+    <%= if Enum.any?(@page.entries) do %>
+      <div class="col-md-8">
+        <h3>Micropost feed</h3>
+        <%= render SharedView, "feed.html", conn: @conn, page: @page %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="center jumbotron">
+    <h1>Welcome to the Sample App</h1>
 
-  <h2>
-    This is the home page for the
-    <a href="http://www.railstutorial.org/">Ruby on Rails Tutorial</a>
-    sample application.
-  </h2>
+    <h2>
+      This is the home page for the
+      <a href="http://www.railstutorial.org/">Ruby on Rails Tutorial</a>
+      sample application.
+    </h2>
 
-  <%= link "Sign up now!", to: user_path(@conn, :new), class: "btn btn-lg btn-primary" %>
-</div>
+    <%= link "Sign up now!", to: user_path(@conn, :new), class: "btn btn-lg btn-primary" %>
+  </div>
 
-<%= link to: "http://rubyonrails.org/" do %>
-  <%= tag :img, src: static_path(@conn, "/images/rails.png"), alt: "Rails logo" %>
+  <%= link to: "http://rubyonrails.org/" do %>
+    <%= tag :img, src: static_path(@conn, "/images/rails.png"), alt: "Rails logo" %>
+  <% end %>
 <% end %>

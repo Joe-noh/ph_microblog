@@ -1,8 +1,20 @@
 defmodule PhMicroblog.StaticPageController do
   use PhMicroblog.Web, :controller
 
-  def home(conn, _params) do
-    render conn, "home.html"
+  alias PhMicroblog.{User, Micropost, Pager}
+
+  def home(conn, params) do
+    case conn.assigns[:current_user] do
+      nil ->
+        render conn, "home.html"
+      current_user ->
+        changeset = Micropost.changeset(%Micropost{})
+        page = current_user
+          |> User.feed
+          |> Pager.paginate(page_number: params["p"])
+
+        render conn, "home.html", micropost_changeset: changeset, page: page
+    end
   end
 
   def help(conn, _params) do

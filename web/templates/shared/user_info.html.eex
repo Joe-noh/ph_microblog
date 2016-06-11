@@ -1,0 +1,6 @@
+<%= link to: user_path(@conn, :show, @user), class: "gravatar" do %>
+  <%= tag :img, src: gravatar_url(@user, 50) %>
+<% end %>
+<h1><%= @user.name %></h1>
+<span><%= link "view my profile", to: user_path(@conn, :show, @user) %></span>
+<span><%= @page.total_entries %> microposts</span>
