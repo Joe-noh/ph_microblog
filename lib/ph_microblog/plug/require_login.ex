@@ -1,7 +1,7 @@
 defmodule PhMicroblog.RequireLogin do
   import Plug.Conn
-  import Phoenix.Controller, only: [put_flash: 3, redirect: 2]
-  import PhMicroblog.Router.Helpers, only: [session_path: 2, static_page_path: 2]
+  import Phoenix.Controller
+  import PhMicroblog.Router.Helpers
 
   def init(_), do: :ok
 
