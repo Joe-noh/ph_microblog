@@ -6,7 +6,7 @@ defmodule PhMicroblog.UserController do
   alias PhMicroblog.{User, Repo, Pager}
   alias PhMicroblog.{RequireLogin, CorrectUser}
 
-  plug RequireLogin when action in [:index, :edit, :update, :delete]
+  plug RequireLogin when action in [:index, :edit, :update, :delete, :following, :followers]
   plug :scrub_params, "user" when action in [:create, :update]
   plug :set_user when action in [:show, :edit, :update, :delete, :following, :followers]
   plug CorrectUser, [accessor: [:user]] when action in [:edit, :update]
