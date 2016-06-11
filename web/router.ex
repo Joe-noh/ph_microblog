@@ -19,19 +19,19 @@ defmodule PhMicroblog.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/",                    StaticPageController, :home
-    get "static_pages/help",    StaticPageController, :help
-    get "static_pages/about",   StaticPageController, :about
-    get "static_pages/contact", StaticPageController, :contact
+    get "/static_pages/help",    StaticPageController, :help
+    get "/static_pages/about",   StaticPageController, :about
+    get "/static_pages/contact", StaticPageController, :contact
 
-    get "signup", UserController, :new
+    get "/signup", UserController, :new
     resources "/users", UserController, except: [:new] do
       get "/following", UserController, :following, as: :relationship
       get "/followers", UserController, :followers, as: :relationship
     end
 
-    get    "login",  SessionController, :new
-    post   "login",  SessionController, :create
-    delete "logout", SessionController, :destroy
+    get    "/login",  SessionController, :new
+    post   "/login",  SessionController, :create
+    delete "/logout", SessionController, :destroy
 
     resources "/microposts", MicropostController, only: [:create, :delete]
     resources "/relationships", RelationshipController, only: [:create, :delete]
