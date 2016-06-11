@@ -2,21 +2,10 @@
   <div class="row">
     <aside class="col-md-4">
       <section class="user_info">
-        <%= link to: user_path(@conn, :show, @current_user), class: "gravatar" do %>
-          <%= tag :img, src: gravatar_url(@current_user, 50) %>
-        <% end %>
-        <h1><%= @current_user.name %></h1>
-        <span><%= link "view my profile", to: user_path(@conn, :show, @current_user) %></span>
-        <span><%= @page.total_entries %> microposts</span>
+        <%= render SharedView, "user_info.html", conn: @conn, user: @current_user, page: @page %>
       </section>
       <section class="micropost_form">
-        <%= form_for @micropost_changeset, micropost_path(@conn, :create), fn f -> %>
-          <div class="field form-group <%= has_error(f, :content) %>">
-            <%= textarea f, :content, placeholder: "Compose new micropost...", class: "form-control" %>
-            <%= error_tag f, :content %>
-          </div>
-          <%= submit "Post", class: "btn btn-primary" %>
-        <% end %>
+        <%= render SharedView, "micropost_form.html", conn: @conn, changeset: @micropost_changeset %>
       </section>
     </aside>
     <%= if Enum.any?(@page.entries) do %>
