@@ -34,7 +34,16 @@ defmodule PhMicroblog.MicropostController do
 
     conn
     |> put_flash(:info, "Micropost deleted")
-    |> redirect(to: static_page_path(conn, :home))
+    |> redirect_to_referer_or(static_page_path(conn, :home))
+  end
+
+  defp redirect_to_referer_or(conn, default) do
+    case List.keyfind(conn.req_headers, "referer", 0) do
+      {"referer", referer} ->
+        redirect(conn, to: URI.parse(referer).path)
+      _ ->
+        redirect(conn, to: default)
+    end
   end
 
   defp set_micropost(conn, _opts) do
