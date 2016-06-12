@@ -13,6 +13,7 @@ defmodule PhMicroblog.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug PhMicroblog.Plug.CurrentUser, mode: :json
   end
 
   scope "/", PhMicroblog do
@@ -24,6 +25,7 @@ defmodule PhMicroblog.Router do
     get "/static_pages/contact", StaticPageController, :contact
 
     get "/signup", UserController, :new
+
     resources "/users", UserController, except: [:new] do
       get "/following", UserController, :following, as: :relationship
       get "/followers", UserController, :followers, as: :relationship
@@ -40,6 +42,8 @@ defmodule PhMicroblog.Router do
   scope "/api", PhMicroblog.Json, as: :api do
     pipe_through :api
 
-    post   "/login",  SessionController, :create
+    post "/login",  SessionController, :create
+
+    resources "/users", UserController, except: [:new, :edit]
   end
 end
