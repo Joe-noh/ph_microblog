@@ -29,7 +29,7 @@ defmodule PhMicroblog.MicropostControllerTest do
         |> post(micropost_path(build_conn(), :create), micropost: params)
         |> html_response(200)
 
-      assert html |> Floki.find(".has-error") |> Enum.count != 0
+      assert count_element(html, ".has-error") != 0
     end
   end
 

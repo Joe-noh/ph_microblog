@@ -19,9 +19,9 @@ defmodule PhMicroblog.UserControllerTest do
         |> get(user_path(build_conn(), :index))
         |> html_response(200)
 
-      assert html |> Floki.find("title") |> Floki.text == "All users | Sample App"
-      assert html |> Floki.find(".previous") |> Enum.count == 2
-      assert html |> Floki.find(".next.disabled") |> Enum.count == 2
+      assert has_title?(html, "All users | Sample App")
+      assert count_element(html, ".previous") == 2
+      assert count_element(html, ".next.disabled") == 2
     end
 
     test "redirects to login page without login" do
@@ -53,7 +53,7 @@ defmodule PhMicroblog.UserControllerTest do
         |> get(user_path(build_conn(), :new))
         |> html_response(200)
 
-      assert html |> Floki.find("title") |> Floki.text == "Sign up | Sample App"
+      assert has_title?(html, "Sign up | Sample App")
     end
   end
 
@@ -84,7 +84,7 @@ defmodule PhMicroblog.UserControllerTest do
         |> post(user_path(build_conn(), :create), user: params)
         |> html_response(200)
 
-      assert html |> Floki.find(".has-error") |> Enum.count != 0
+      assert count_element(html, ".has-error") != 0
     end
   end
 
@@ -95,7 +95,7 @@ defmodule PhMicroblog.UserControllerTest do
         |> get(user_path(build_conn(), :edit, user))
         |> html_response(200)
 
-      assert html |> Floki.find("h1") |> Floki.text == "Update your profile"
+      assert inner_text(html, "h1") == "Update your profile"
     end
 
     test "needs login", %{user: user} do
@@ -176,7 +176,7 @@ defmodule PhMicroblog.UserControllerTest do
         |> get(user_relationship_path(build_conn(), :following, user))
         |> html_response(200)
 
-      assert html |> Floki.find("title") |> Floki.text == "Following | Sample App"
+      assert has_title?(html, "Following | Sample App")
     end
 
     test "needs login", %{user: user} do
@@ -195,7 +195,7 @@ defmodule PhMicroblog.UserControllerTest do
         |> get(user_relationship_path(build_conn(), :followers, user))
         |> html_response(200)
 
-      assert html |> Floki.find("title") |> Floki.text == "Followers | Sample App"
+      assert has_title?(html, "Followers | Sample App")
     end
 
     test "needs login", %{user: user} do

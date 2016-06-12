@@ -15,7 +15,7 @@ defmodule PhMicroblog.SessionControllerTest do
         |> get(session_path(build_conn(), :new))
         |> html_response(200)
 
-      assert html |> Floki.find("h1") |> Floki.text == "Log in"
+      assert inner_text(html, "h1") == "Log in"
     end
   end
 
@@ -34,7 +34,7 @@ defmodule PhMicroblog.SessionControllerTest do
         |> post(session_path(build_conn(), :create), %{session: params})
         |> html_response(200)
 
-       assert html |> Floki.find(".alert-danger") |> Floki.text =~ ~r/Invalid/
+       assert inner_text(html, ".alert-danger") =~ ~r/Invalid/
     end
   end
 

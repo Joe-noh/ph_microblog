@@ -30,6 +30,8 @@ defmodule PhMicroblog.ConnCase do
       # The default endpoint for testing
       @endpoint PhMicroblog.Endpoint
 
+      import PhMicroblog.TestHelper
+
       def with_session(conn) do
         session_opts = Plug.Session.init(
           store: :cookie,
