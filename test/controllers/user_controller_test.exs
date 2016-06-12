@@ -1,5 +1,5 @@
 defmodule PhMicroblog.UserControllerTest do
-  use PhMicroblog.ConnCase
+  use PhMicroblog.ConnCase, async: true
 
   alias PhMicroblog.{Factory, User}
 

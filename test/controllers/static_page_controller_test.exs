@@ -1,5 +1,5 @@
 defmodule PhMicroblog.StaticPageControllerTest do
-  use PhMicroblog.ConnCase
+  use PhMicroblog.ConnCase, async: true
 
   test "GET home", %{conn: conn} do
     html = build_conn()

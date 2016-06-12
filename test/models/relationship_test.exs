@@ -1,5 +1,5 @@
 defmodule PhMicroblog.RelationshipTest do
-  use PhMicroblog.ModelCase
+  use PhMicroblog.ModelCase, async: true
 
   alias PhMicroblog.{Relationship, Factory, Repo}
 

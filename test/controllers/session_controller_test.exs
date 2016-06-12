@@ -1,5 +1,5 @@
 defmodule PhMicroblog.SessionControllerTest do
-  use PhMicroblog.ConnCase
+  use PhMicroblog.ConnCase, async: true
 
   alias PhMicroblog.Factory
 

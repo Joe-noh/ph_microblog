@@ -1,5 +1,5 @@
 defmodule PhMicroblog.MicropostTest do
-  use PhMicroblog.ModelCase
+  use PhMicroblog.ModelCase, async: true
 
   alias PhMicroblog.{Factory, Micropost}
 
