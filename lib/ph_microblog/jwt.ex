@@ -3,14 +3,15 @@ defmodule PhMicroblog.Jwt do
 
   @secret Application.get_env(:ph_microblog, PhMicroblog.Endpoint)[:secret_key_base]
 
+  @spec decode(String.t) :: {:ok, map} | {:error, String.t}
   def decode(jwt) do
     jwt
     |> token()
     |> with_signer(hs256 @secret)
-    |> verify()
-    |> Map.get(:claims, %{})
+    |> verify!()
   end
 
+  @spec encode(map) :: String.t
   def encode(user) do
     %{user_id: user.id, user_name: user.name}
     |> token()

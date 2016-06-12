@@ -20,15 +20,15 @@ defmodule PhMicroblog.JwtTest do
       {:ok, [token: Jwt.encode(user)]}
     end
 
-    test "returns a map", %{token: token} do
-      assert Jwt.decode(token) |> is_map
-    end
-
     test "result includes user_id and user_name", %{token: token} do
-      result = Jwt.decode(token)
+      {:ok, result} = Jwt.decode(token)
 
       assert result["user_id"]
       assert result["user_name"]
+    end
+
+    test "returns error tuple when token is invalid" do
+      assert {:error, _} = Jwt.decode("aaaaaaaaa")
     end
   end
 end
