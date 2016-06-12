@@ -1,5 +1,5 @@
 defmodule PhMicroblog.SessionControllerTest do
-  use PhMicroblog.ConnCase
+  use PhMicroblog.ConnCase, async: true
 
   alias PhMicroblog.Factory
 
@@ -9,37 +9,43 @@ defmodule PhMicroblog.SessionControllerTest do
     {:ok, user: user}
   end
 
-  test "GET new" do
-    html = conn
-      |> get(session_path(conn, :new))
-      |> html_response(200)
+  describe "GET new" do
+    test "shows us login page"do
+      html = build_conn()
+        |> get(session_path(build_conn(), :new))
+        |> html_response(200)
 
-    assert html |> Floki.find("h1") |> Floki.text == "Log in"
+      assert inner_text(html, "h1") == "Log in"
+    end
   end
 
-  test "POST create with correct email/pass", %{user: user} do
-    params = %{email: user.email, password: "password"}
-    conn = post(conn, session_path(conn, :create), %{session: params})
+  describe "POST create" do
+    test "redirects to user page with correct email/pass", %{user: user} do
+      params = %{email: user.email, password: "password"}
+      conn = build_conn() |> post(session_path(build_conn(), :create), %{session: params})
 
-    assert redirected_to(conn) == user_path(conn, :show, user)
+      assert redirected_to(conn) == user_path(conn, :show, user)
+    end
+
+    test "renders error with incorrect email/pass", %{user: user} do
+      params = %{email: user.email, password: "hogehoge"}
+
+      html = build_conn()
+        |> post(session_path(build_conn(), :create), %{session: params})
+        |> html_response(200)
+
+       assert inner_text(html, ".alert-danger") =~ ~r/Invalid/
+    end
   end
 
-  test "POST create with incorrect email/pass", %{user: user} do
-    params = %{email: user.email, password: "hogehoge"}
+  describe "DELETE destroy" do
+    test "can remove current_user_id from session" do
+      conn = build_conn()
+        |> with_session
+        |> put_session(:current_user_id, 3)
+        |> delete(session_path(build_conn(), :destroy))
 
-    html = conn
-      |> post(session_path(conn, :create), %{session: params})
-      |> html_response(200)
-
-     assert html |> Floki.find(".alert-danger") |> Floki.text =~ ~r/Invalid/
-  end
-
-  test "DELETE destroy" do
-    conn = conn
-      |> with_session
-      |> put_session(:current_user_id, 3)
-      |> delete(session_path(conn, :destroy))
-
-    assert get_session(conn, :current_user_id) == nil
+      assert get_session(conn, :current_user_id) == nil
+    end
   end
 end

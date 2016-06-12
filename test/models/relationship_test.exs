@@ -1,5 +1,5 @@
 defmodule PhMicroblog.RelationshipTest do
-  use PhMicroblog.ModelCase
+  use PhMicroblog.ModelCase, async: true
 
   alias PhMicroblog.{Relationship, Factory, Repo}
 
@@ -10,12 +10,14 @@ defmodule PhMicroblog.RelationshipTest do
     {:ok, [michael: michael, archer: archer]}
   end
 
-  test "pair of follower_id and followed_id should be unique", %{michael: michael, archer: archer} do
-    Factory.create(:relationship, follower: michael, followed: archer)
+  describe "validations" do
+    test "pair of follower_id and followed_id should be unique", %{michael: michael, archer: archer} do
+      Factory.create(:relationship, follower: michael, followed: archer)
 
-    changeset = Factory.build(:relationship, follower: michael, followed: archer)
-      |> Relationship.changeset
+      changeset = Factory.build(:relationship, follower: michael, followed: archer)
+        |> Relationship.changeset
 
-    assert {:error, _} = Repo.insert(changeset)
+      assert {:error, _} = Repo.insert(changeset)
+    end
   end
 end

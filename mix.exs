@@ -29,7 +29,7 @@ defmodule PhMicroblog.Mixfile do
   defp apps do
     [
       :phoenix, :phoenix_html, :cowboy, :logger, :gettext,
-      :phoenix_ecto, :postgrex, :comeonin
+      :phoenix_pubsub, :phoenix_ecto, :postgrex, :comeonin
     ]
   end
 
@@ -38,7 +38,8 @@ defmodule PhMicroblog.Mixfile do
 
   defp deps do
     [
-      {:phoenix, "~> 1.1.4"},
+      {:phoenix, "~> 1.2.0-rc"},
+      {:phoenix_pubsub, "~> 1.0.0-rc"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_ecto, "3.0.0-rc.0"},
       {:phoenix_html, "~> 2.4"},
