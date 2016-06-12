@@ -1,7 +1,7 @@
 defmodule PhMicroblog.Json.SessionController do
   use PhMicroblog.Web, :json_controller
 
-  alias PhMicroblog.{User, Repo, Plug.CurrentUser}
+  alias PhMicroblog.{User, Jwt, Repo}
 
   def create(conn, %{"session" => %{"email" => email, "password" => password}}) do
     case Repo.get_by(User, email: email) do
@@ -10,9 +10,9 @@ defmodule PhMicroblog.Json.SessionController do
       user ->
         case User.authenticate(user, password) do
           {:ok, user} ->
-            conn |> render("token.json", token: "hogehoge")
+            conn |> render("token.json", token: Jwt.encode(user))
           :error ->
-            unauthorized conn
+            unauthorized(conn)
         end
     end
   end

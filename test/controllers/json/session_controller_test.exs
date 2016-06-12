@@ -1,6 +1,6 @@
 defmodule PhMicroblog.Json.SessionControllerTest do
   use PhMicroblog.ConnCase, async: true
-  @moduletag :json_api
+  @moduletag :json_controller
 
   alias PhMicroblog.Factory
 
@@ -18,7 +18,7 @@ defmodule PhMicroblog.Json.SessionControllerTest do
         |> post(api_session_path(build_conn(), :create), %{session: params})
         |> json_response(200)
 
-      assert json["token"] == "hogehoge"
+      assert json["token"] |> is_binary
     end
 
     test "renders error with incorrect email/pass", %{user: user} do
