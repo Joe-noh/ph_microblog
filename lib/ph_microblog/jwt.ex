@@ -8,6 +8,7 @@ defmodule PhMicroblog.Jwt do
     |> token()
     |> with_signer(hs256 @secret)
     |> verify()
+    |> Map.get(:claims, %{})
   end
 
   def encode(user) do

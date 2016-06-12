@@ -27,8 +27,8 @@ defmodule PhMicroblog.JwtTest do
     test "result includes user_id and user_name", %{token: token} do
       result = Jwt.decode(token)
 
-      assert result.claims["user_id"]
-      assert result.claims["user_name"]
+      assert result["user_id"]
+      assert result["user_name"]
     end
   end
 end
