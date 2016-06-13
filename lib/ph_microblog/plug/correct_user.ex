@@ -1,24 +1,35 @@
 defmodule PhMicroblog.CorrectUser do
   import Plug.Conn
-  import Phoenix.Controller, only: [redirect: 2]
-  import PhMicroblog.Router.Helpers, only: [static_page_path: 2]
+  import Phoenix.Controller
+  import PhMicroblog.Router.Helpers
 
-  def init(accessor: accessor), do: accessor
+  alias PhMicroblog.Json.ErrorView
 
-  def call(conn, accessor) when is_list(accessor) do
+  def init(opts) do
+    [
+      accessor: Dict.get(opts, :accessor),
+      mode:     Dict.get(opts, :mode)
+    ]
+  end
+
+  def call(conn, opts) do
     current_user = conn.assigns.current_user
-    resource_owner = Enum.reduce(accessor, conn.assigns, &Map.get(&2, &1))
+    resource_owner = Enum.reduce(opts[:accessor], conn.assigns, &Map.get(&2, &1))
 
     if current_user.id == resource_owner.id do
       conn
     else
-      conn |> go_home
+      conn |> refuse(opts[:mode]) |> halt
     end
   end
 
-  defp go_home(conn) do
+  defp refuse(conn, :json) do
     conn
-    |> redirect(to: static_page_path(conn, :home))
-    |> halt
+    |> put_status(401)
+    |> render(ErrorView, "401.json")
+  end
+
+  defp refuse(conn, _) do
+    conn |> redirect(to: static_page_path(conn, :home))
   end
 end
