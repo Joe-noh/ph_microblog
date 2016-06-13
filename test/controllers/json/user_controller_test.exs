@@ -32,4 +32,15 @@ defmodule PhMicroblog.Json.UserControllerTest do
       assert json["error"] == "Unauthorized"
     end
   end
+
+  describe "GET show" do
+    test "returns a user", %{user: user, conn: conn} do
+      json = conn
+        |> get(api_user_path(conn, :show, user))
+        |> json_response(200)
+
+      assert json["user"]["id"]   == user.id
+      assert json["user"]["name"] == user.name
+    end
+  end
 end
