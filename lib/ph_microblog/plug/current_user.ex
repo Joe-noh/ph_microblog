@@ -19,7 +19,7 @@ defmodule PhMicroblog.Plug.CurrentUser do
   end
 
   defp fetch_user_id(conn, :json) do
-    with ["Bearer " <> token | _] <- get_req_header(conn, "authorization"),
+    with {:ok, token} <- fetch_auth_token(conn),
          {:ok, claims} <- Jwt.decode(token) do
       {:ok, claims["user_id"]}
     else
@@ -38,6 +38,14 @@ defmodule PhMicroblog.Plug.CurrentUser do
     case Repo.get(User, id) do
       nil  -> nil
       user -> {:ok, user}
+    end
+  end
+
+  defp fetch_auth_token(conn) do
+    case get_req_header(conn, "authorization") do
+      ["Bearer " <> token] -> {:ok, token}
+      [token] -> {:ok, token}
+      _other -> :error
     end
   end
 end
