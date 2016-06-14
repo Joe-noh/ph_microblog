@@ -1,16 +1,15 @@
 defmodule PhMicroblog.Json.UserController do
   use PhMicroblog.Web, :json_controller
 
-  import Ecto.Query
-
   alias PhMicroblog.{User, Repo, Pager}
   alias PhMicroblog.{RequireLogin, CorrectUser}
-  alias PhMicroblog.Json.ChangesetView
+  alias PhMicroblog.Json.{ChangesetView, ErrorView}
 
-  plug RequireLogin, [mode: :json] when action in [:index, :update]
+  plug RequireLogin, [mode: :json] when action in [:index, :update, :delete]
   plug :scrub_params, "user" when action in [:create, :update]
-  plug :set_user when action in [:show, :update]
+  plug :set_user when action in [:show, :update, :delete]
   plug CorrectUser, [accessor: [:user], mode: :json] when action in [:update]
+  plug :admin_only when action in [:delete]
 
   def index(conn, params) do
     page = User |> Pager.paginate(page_number: params["p"])
@@ -43,7 +42,7 @@ defmodule PhMicroblog.Json.UserController do
     case Repo.update(changeset) do
       {:ok, user} ->
         conn
-        |> put_status(204)
+        |> put_status(200)
         |> render("show.json", user: user)
       {:error, changeset} ->
         conn
@@ -52,9 +51,23 @@ defmodule PhMicroblog.Json.UserController do
     end
   end
 
+  def delete(conn, _params) do
+    conn.assigns.user |> Repo.delete!
+
+    conn |> put_status(204) |> json(%{})
+  end
+
   defp set_user(conn, _opts) do
     user = User |> Repo.get!(conn.params["id"])
 
     conn |> assign(:user, user)
+  end
+
+  defp admin_only(conn, _opts) do
+    if conn.assigns.current_user.admin do
+      conn
+    else
+      conn |> put_status(401) |> render(ErrorView, "401.json") |> halt
+    end
   end
 end

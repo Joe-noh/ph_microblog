@@ -74,7 +74,7 @@ defmodule PhMicroblog.Json.UserControllerTest do
       json = conn
         |> put_req_header("authorization", Jwt.encode(user))
         |> put(api_user_path(conn, :update, user), user: %{name: "Jack Johnson"})
-        |> json_response(204)
+        |> json_response(200)
 
       assert json["user"]["name"] == "Jack Johnson"
     end
@@ -92,6 +92,26 @@ defmodule PhMicroblog.Json.UserControllerTest do
       json = conn
         |> put_req_header("authorization", Jwt.encode(another))
         |> put(api_user_path(conn, :update, user), user: %{name: "Jack Johnson"})
+        |> json_response(401)
+
+      assert json["error"] == "Unauthorized"
+    end
+  end
+
+  describe "DELETE destroy" do
+    test "deletes a user", %{conn: conn, user: user, another_user: another} do
+      json = conn
+        |> put_req_header("authorization", Jwt.encode(user))
+        |> delete(api_user_path(conn, :delete, another))
+        |> json_response(204)
+
+      assert json == %{}
+    end
+
+    test "non-admin can't delete", %{conn: conn, another_user: another} do
+      json = conn
+        |> put_req_header("authorization", Jwt.encode(another))
+        |> delete(api_user_path(conn, :delete, another))
         |> json_response(401)
 
       assert json["error"] == "Unauthorized"
