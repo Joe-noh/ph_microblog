@@ -13,17 +13,19 @@ defmodule PhMicroblog.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug PhMicroblog.Plug.CurrentUser, mode: :json
   end
 
   scope "/", PhMicroblog do
     pipe_through :browser # Use the default browser stack
 
-    get "/",                    StaticPageController, :home
+    get "/",                     StaticPageController, :home
     get "/static_pages/help",    StaticPageController, :help
     get "/static_pages/about",   StaticPageController, :about
     get "/static_pages/contact", StaticPageController, :contact
 
     get "/signup", UserController, :new
+
     resources "/users", UserController, except: [:new] do
       get "/following", UserController, :following, as: :relationship
       get "/followers", UserController, :followers, as: :relationship
@@ -37,8 +39,11 @@ defmodule PhMicroblog.Router do
     resources "/relationships", RelationshipController, only: [:create, :delete]
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", PhMicroblog do
-  #   pipe_through :api
-  # end
+  scope "/api", PhMicroblog.Json, as: :api do
+    pipe_through :api
+
+    post "/login",  SessionController, :create
+
+    resources "/users", UserController, except: [:new, :edit]
+  end
 end

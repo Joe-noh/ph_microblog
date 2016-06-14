@@ -3,13 +3,28 @@ defmodule PhMicroblog.RequireLogin do
   import Phoenix.Controller
   import PhMicroblog.Router.Helpers
 
-  def init(_), do: :ok
+  def init(opts) do
+    opts |> Dict.get(:mode)
+  end
 
-  def call(conn, _) do
+  def call(conn, mode) do
     case conn.assigns[:current_user] do
-      nil -> conn |> go_login_page
+      nil -> conn |> refuse(mode) |> halt
       _   -> conn
     end
+  end
+
+  defp refuse(conn, :json) do
+    conn
+    |> put_status(401)
+    |> render(PhMicroblog.Json.ErrorView, "401.json")
+  end
+
+  defp refuse(conn, _) do
+    conn
+    |> store_location
+    |> put_flash(:error, "Please log in.")
+    |> redirect(to: session_path(conn, :new))
   end
 
   def forwarding_path(conn) do
@@ -18,14 +33,6 @@ defmodule PhMicroblog.RequireLogin do
 
   def delete_forwarding_path(conn) do
     delete_session(conn, :forwarding_path)
-  end
-
-  defp go_login_page(conn) do
-    conn
-    |> store_location
-    |> put_flash(:error, "Please log in.")
-    |> redirect(to: session_path(conn, :new))
-    |> halt
   end
 
   defp store_location(conn) do

@@ -39,6 +39,21 @@ defmodule PhMicroblog.Web do
     end
   end
 
+  def json_controller do
+    quote do
+      use Phoenix.Controller
+
+      alias PhMicroblog.Repo
+      import Ecto
+      import Ecto.Query
+
+      import PhMicroblog.Router.Helpers
+      import PhMicroblog.Gettext
+
+      alias PhMicroblog.Json.ErrorView
+    end
+  end
+
   def view do
     quote do
       use Phoenix.View, root: "web/templates"
