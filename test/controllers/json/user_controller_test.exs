@@ -23,7 +23,7 @@ defmodule PhMicroblog.Json.UserControllerTest do
       assert json["users"] |> is_list
     end
 
-    test "redirects to login page without login", %{conn: conn} do
+    test "can't get users list without login", %{conn: conn} do
       json = conn
         |> assign(:current_user, nil)
         |> get(api_user_path(conn, :index))
