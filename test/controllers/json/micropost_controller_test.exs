@@ -20,7 +20,9 @@ defmodule PhMicroblog.Json.MicropostControllerTest do
         |> post(api_micropost_path(conn, :create), micropost: params)
         |> json_response(201)
 
+      assert json["micropost"]["id"]
       assert json["micropost"]["content"] == params.content
+      assert json["micropost"]["inserted_at"]
     end
 
     test "with invalid params", %{user: user, conn: conn} do

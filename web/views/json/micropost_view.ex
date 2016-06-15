@@ -10,6 +10,10 @@ defmodule PhMicroblog.Json.MicropostView do
   end
 
   def render("micropost.json", %{micropost: micropost}) do
-    %{id: micropost.id, content: micropost.content}
+    %{
+      id: micropost.id,
+      content: micropost.content,
+      inserted_at: micropost.inserted_at
+    }
   end
 end
