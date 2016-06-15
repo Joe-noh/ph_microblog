@@ -45,5 +45,8 @@ defmodule PhMicroblog.Router do
     post "/login",  SessionController, :create
 
     resources "/users", UserController, except: [:new, :edit]
+    resources "/microposts", MicropostController, only: [:create, :delete]
+
+    get "/feed", UserController, :feed, as: :feed
   end
 end

@@ -3,9 +3,9 @@ defmodule PhMicroblog.Json.UserController do
 
   alias PhMicroblog.{User, Repo, Pager}
   alias PhMicroblog.{RequireLogin, CorrectUser}
-  alias PhMicroblog.Json.{ChangesetView, ErrorView}
+  alias PhMicroblog.Json.{MicropostView, ChangesetView, ErrorView}
 
-  plug RequireLogin, [mode: :json] when action in [:index, :update, :delete]
+  plug RequireLogin, [mode: :json] when action in [:index, :update, :delete, :feed]
   plug :scrub_params, "user" when action in [:create, :update]
   plug :set_user when action in [:show, :update, :delete]
   plug CorrectUser, [accessor: [:user], mode: :json] when action in [:update]
@@ -57,8 +57,16 @@ defmodule PhMicroblog.Json.UserController do
     conn |> put_status(204) |> json(%{})
   end
 
+  def feed(conn, params) do
+    page = conn.assigns.current_user
+      |> User.feed()
+      |> Pager.paginate(page_number: params["p"])
+
+    render(conn, MicropostView, "index.json", page: page)
+  end
+
   defp set_user(conn, _opts) do
-    user = User |> Repo.get!(conn.params["id"])
+    user = User |> Repo.get!(conn.params["id"] || conn.params["user_id"])
 
     conn |> assign(:user, user)
   end
