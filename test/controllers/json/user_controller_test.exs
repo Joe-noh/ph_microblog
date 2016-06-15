@@ -117,4 +117,24 @@ defmodule PhMicroblog.Json.UserControllerTest do
       assert json["error"] == "Unauthorized"
     end
   end
+
+  describe "GET feed" do
+    test "lists current user's feed", %{conn: conn, user: user} do
+      json = conn
+        |> put_req_header("authorization", Jwt.encode(user))
+        |> get(api_feed_path(conn, :feed))
+        |> json_response(200)
+
+      assert json["microposts"] |> is_list
+    end
+
+    test "can't get the feed without login", %{conn: conn} do
+      json = conn
+        |> assign(:current_user, nil)
+        |> get(api_feed_path(conn, :feed))
+        |> json_response(401)
+
+      assert json["error"] == "Unauthorized"
+    end
+  end
 end
