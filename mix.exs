@@ -29,7 +29,8 @@ defmodule PhMicroblog.Mixfile do
   defp apps do
     [
       :phoenix, :phoenix_html, :cowboy, :logger, :gettext,
-      :phoenix_pubsub, :phoenix_ecto, :postgrex, :comeonin
+      :phoenix_pubsub, :phoenix_ecto, :postgrex, :comeonin,
+      :scrivener, :scrivener_ecto, :joken
     ]
   end
 
@@ -54,7 +55,9 @@ defmodule PhMicroblog.Mixfile do
       {:faker, "~> 0.6.0", only: :dev},
 
       {:floki, "~> 0.8", only: :test},
-      {:ex_machina, "~> 0.6.1", only: :test}
+      {:ex_machina, "~> 0.6.1", only: :test},
+
+      {:exrm, "~> 1.0"}
     ]
   end
 
