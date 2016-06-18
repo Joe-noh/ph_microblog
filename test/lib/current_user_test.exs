@@ -21,6 +21,7 @@ defmodule PhMicroblog.CurrentUserTest do
       assert conn.assigns.current_user
     end
 
+    @tag :capture_log
     test "assigns nothing if the token is invalid", %{conn: conn, opts: opts} do
       conn = conn
         |> put_req_header("authorization", "aaaaaaaaaaaaaaa")

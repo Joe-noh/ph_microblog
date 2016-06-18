@@ -27,6 +27,7 @@ defmodule PhMicroblog.JwtTest do
       assert result["user_name"]
     end
 
+    @tag :capture_log
     test "returns error tuple when token is invalid" do
       assert {:error, _} = Jwt.decode("aaaaaaaaa")
     end
