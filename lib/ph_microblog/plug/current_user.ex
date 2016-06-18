@@ -1,4 +1,4 @@
-defmodule PhMicroblog.Plug.CurrentUser do
+defmodule PhMicroblog.CurrentUser do
   import Plug.Conn
 
   alias PhMicroblog.{User, Repo, Jwt}

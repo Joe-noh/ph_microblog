@@ -2,7 +2,7 @@ defmodule PhMicroblog.CurrentUserTest do
   use PhMicroblog.ConnCase, aysnc: true
 
   alias PhMicroblog.{Jwt, Factory}
-  alias PhMicroblog.Plug.CurrentUser
+  alias PhMicroblog.CurrentUser
 
   describe "mode :json" do
     setup %{conn: conn} do

@@ -1,7 +1,7 @@
 defmodule PhMicroblog.SessionController do
   use PhMicroblog.Web, :controller
 
-  alias PhMicroblog.{User, Repo, Plug.CurrentUser}
+  alias PhMicroblog.{User, Repo, CurrentUser}
 
   def new(conn, _params) do
     conn
