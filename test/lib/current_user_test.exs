@@ -2,7 +2,7 @@ defmodule PhMicroblog.CurrentUserTest do
   use PhMicroblog.ConnCase, aysnc: true
 
   alias PhMicroblog.{Jwt, Factory}
-  alias PhMicroblog.Plug.CurrentUser
+  alias PhMicroblog.CurrentUser
 
   describe "mode :json" do
     setup %{conn: conn} do
@@ -21,6 +21,7 @@ defmodule PhMicroblog.CurrentUserTest do
       assert conn.assigns.current_user
     end
 
+    @tag :capture_log
     test "assigns nothing if the token is invalid", %{conn: conn, opts: opts} do
       conn = conn
         |> put_req_header("authorization", "aaaaaaaaaaaaaaa")

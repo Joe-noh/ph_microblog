@@ -8,12 +8,12 @@ defmodule PhMicroblog.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
 
-    plug PhMicroblog.Plug.CurrentUser
+    plug PhMicroblog.CurrentUser
   end
 
   pipeline :api do
     plug :accepts, ["json"]
-    plug PhMicroblog.Plug.CurrentUser, mode: :json
+    plug PhMicroblog.CurrentUser, mode: :json
   end
 
   scope "/", PhMicroblog do

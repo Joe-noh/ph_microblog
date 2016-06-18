@@ -4,7 +4,7 @@ defmodule PhMicroblog.UserController do
   import Ecto.Query
 
   alias PhMicroblog.{User, Repo, Pager}
-  alias PhMicroblog.{RequireLogin, CorrectUser}
+  alias PhMicroblog.{RequireLogin, CorrectUser, CurrentUser}
 
   plug RequireLogin when action in [:index, :edit, :update, :delete, :following, :followers]
   plug :scrub_params, "user" when action in [:create, :update]
@@ -35,6 +35,7 @@ defmodule PhMicroblog.UserController do
       {:ok, user} ->
         conn
         |> put_flash(:info, "Welcome to Sample App!")
+        |> put_session(CurrentUser.session_key, user.id)
         |> redirect_back_or(user_path(conn, :show, user))
       {:error, changeset} ->
         render conn, "new.html", title: "Sign up", changeset: changeset
