@@ -54,7 +54,9 @@ defmodule PhMicroblog.Mixfile do
       {:faker, "~> 0.6.0", only: :dev},
 
       {:floki, "~> 0.8", only: :test},
-      {:ex_machina, "~> 0.6.1", only: :test}
+      {:ex_machina, "~> 0.6.1", only: :test},
+
+      {:exrm, "~> 1.0"}
     ]
   end
 
