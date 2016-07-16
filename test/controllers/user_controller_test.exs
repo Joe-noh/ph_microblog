@@ -5,8 +5,8 @@ defmodule PhMicroblog.UserControllerTest do
 
   setup do
     context = %{
-      user: Factory.create(:michael),
-      another_user: Factory.create(:archer)
+      user: Factory.insert(:michael),
+      another_user: Factory.insert(:archer)
     }
 
     {:ok, context}
@@ -35,9 +35,9 @@ defmodule PhMicroblog.UserControllerTest do
 
   describe "GET show" do
     test "listed microposts are sorted", %{user: user} do
-      p1 = Factory.create(:lorem, user: user, inserted_at: Ecto.DateTime.cast!("2014-04-01T12:00:00Z"))
-      p2 = Factory.create(:lorem, user: user, inserted_at: Ecto.DateTime.cast!("2014-04-04T12:00:00Z"))
-      p3 = Factory.create(:lorem, user: user, inserted_at: Ecto.DateTime.cast!("2014-04-08T12:00:00Z"))
+      p1 = Factory.insert(:lorem, user: user, inserted_at: Ecto.DateTime.cast!("2014-04-01T12:00:00Z"))
+      p2 = Factory.insert(:lorem, user: user, inserted_at: Ecto.DateTime.cast!("2014-04-04T12:00:00Z"))
+      p3 = Factory.insert(:lorem, user: user, inserted_at: Ecto.DateTime.cast!("2014-04-08T12:00:00Z"))
 
       conn = build_conn()
         |> assign(:current_user, user)
@@ -73,7 +73,7 @@ defmodule PhMicroblog.UserControllerTest do
     end
 
     test "shows errors with invalid params" do
-      params = Factory.fields_for(:michael)
+      params = Factory.params_for(:michael)
         |> Map.take([:name, :email])
         |> Map.merge(%{
           password: "pass",

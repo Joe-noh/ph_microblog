@@ -4,15 +4,15 @@ defmodule PhMicroblog.MicropostControllerTest do
   alias PhMicroblog.{Factory, Micropost}
 
   setup do
-    user = Factory.create(:michael)
-    micropost = Factory.create(:lorem, user: user)
+    user = Factory.insert(:michael)
+    micropost = Factory.insert(:lorem, user: user)
 
     {:ok, [user: user, micropost: micropost]}
   end
 
   describe "POST create" do
     test "with valid params", %{user: user} do
-      params = Factory.fields_for(:lorem)
+      params = Factory.params_for(:lorem)
 
       conn = build_conn()
         |> assign(:current_user, user)
@@ -22,7 +22,7 @@ defmodule PhMicroblog.MicropostControllerTest do
     end
 
     test "with invalid params", %{user: user} do
-      params = Factory.fields_for(:lorem, content: "")
+      params = Factory.params_for(:lorem, content: "")
 
       html = build_conn()
         |> assign(:current_user, user)

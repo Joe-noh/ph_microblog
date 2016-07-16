@@ -49,7 +49,7 @@ defmodule PhMicroblog.UserTest do
     end
 
     test "email addresses should be unique", %{user: user} do
-      Factory.create(:michael, email: user.email)
+      Factory.insert(:michael, email: user.email)
 
       assert {:error, _} = user |> User.changeset() |> Repo.insert()
     end
@@ -73,14 +73,14 @@ defmodule PhMicroblog.UserTest do
     end
 
     test "update without password should succeed", %{user: user} do
-      user = Factory.create(:michael, email: user.email)
+      user = Factory.insert(:michael, email: user.email)
 
       assert errors_on(user, %{name: "alex"}) == []
     end
 
     test "associated microposts should be destroyed", %{user: user} do
       user = Repo.insert!(user)
-      micropost = Factory.create(:lorem, user: user)
+      micropost = Factory.insert(:lorem, user: user)
 
       Repo.delete(user)
 
@@ -90,17 +90,17 @@ defmodule PhMicroblog.UserTest do
 
   describe "feed/1" do
     setup do
-      michael = Factory.create(:michael)
-      archer  = Factory.create(:archer)
+      michael = Factory.insert(:michael)
+      archer  = Factory.insert(:archer)
 
-      m_post = Factory.create(:lorem, user: michael)
-      a_post = Factory.create(:lorem, user: archer)
+      m_post = Factory.insert(:lorem, user: michael)
+      a_post = Factory.insert(:lorem, user: archer)
 
       {:ok, [michael: michael, archer: archer, michael_post: m_post, archer_post: a_post]}
     end
 
     test "following user's posts are included", context do
-      Factory.create(:relationship, follower: context.michael, followed: context.archer)
+      Factory.insert(:relationship, follower: context.michael, followed: context.archer)
 
       refute context.michael_post in Repo.all(User.feed context.archer)
       assert context.archer_post  in Repo.all(User.feed context.michael)

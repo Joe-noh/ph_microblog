@@ -3,7 +3,7 @@ defmodule PhMicroblog.Factory do
 
   alias PhMicroblog.{User, Micropost, Relationship}
 
-  def factory(:michael) do
+  def michael_factory do
     %User{
       name: "John Doe",
       email: sequence(:email, &"user#{&1}@example.com"),
@@ -12,7 +12,7 @@ defmodule PhMicroblog.Factory do
     }
   end
 
-  def factory(:archer) do
+  def archer_factory do
     %User{
       name: "Sterling Archer",
       email: sequence(:email, &"user#{&1}@example.com"),
@@ -21,14 +21,14 @@ defmodule PhMicroblog.Factory do
     }
   end
 
-  def factory(:lorem) do
+  def lorem_factory do
     %Micropost{
       content: "Lorem ipsum",
       user: build(:michael)
     }
   end
 
-  def factory(:relationship) do
+  def relationship_factory do
     %Relationship{
       follower: build(:michael),
       followed: build(:archer)

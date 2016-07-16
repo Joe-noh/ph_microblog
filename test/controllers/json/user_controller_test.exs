@@ -5,8 +5,8 @@ defmodule PhMicroblog.Json.UserControllerTest do
 
   setup %{conn: conn} do
     context = %{
-      user: Factory.create(:michael),
-      another_user: Factory.create(:archer),
+      user: Factory.insert(:michael),
+      another_user: Factory.insert(:archer),
       conn: put_req_header(conn, "accept", "application/json")
     }
 

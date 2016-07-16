@@ -4,7 +4,7 @@ defmodule PhMicroblog.MicropostTest do
   alias PhMicroblog.{Factory, Micropost}
 
   setup do
-    micropost = Factory.create(:lorem)
+    micropost = Factory.insert(:lorem)
 
     {:ok, [micropost: micropost]}
   end
@@ -23,13 +23,13 @@ defmodule PhMicroblog.MicropostTest do
     end
 
     test "user_id can't be blank" do
-      params = Factory.fields_for(:lorem)
+      params = Factory.params_for(:lorem)
 
       assert errors_on(%Micropost{user_id: nil}, params)[:user_id]
     end
 
     test "user should exist" do
-      params = Factory.fields_for(:lorem)
+      params = Factory.params_for(:lorem)
       changeset = %Micropost{user_id: -1} |> Micropost.changeset(params)
 
       assert_raise Ecto.InvalidChangesetError, fn ->

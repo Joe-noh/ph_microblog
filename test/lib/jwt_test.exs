@@ -4,7 +4,7 @@ defmodule PhMicroblog.JwtTest do
   alias PhMicroblog.Jwt
 
   setup do
-    user = PhMicroblog.Factory.create(:michael)
+    user = PhMicroblog.Factory.insert(:michael)
 
     {:ok, [user: user]}
   end
