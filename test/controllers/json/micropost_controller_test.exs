@@ -4,8 +4,8 @@ defmodule PhMicroblog.Json.MicropostControllerTest do
   alias PhMicroblog.{Factory, Jwt, Micropost}
 
   setup %{conn: conn} do
-    user = Factory.create(:michael)
-    micropost = Factory.create(:lorem, user: user)
+    user = Factory.insert(:michael)
+    micropost = Factory.insert(:lorem, user: user)
     conn = put_req_header(conn, "accept", "application/json")
 
     {:ok, [user: user, micropost: micropost, conn: conn]}
@@ -13,7 +13,7 @@ defmodule PhMicroblog.Json.MicropostControllerTest do
 
   describe "POST create" do
     test "with valid params", %{user: user, conn: conn} do
-      params = Factory.fields_for(:lorem)
+      params = Factory.params_for(:lorem)
 
       json = conn
         |> put_req_header("authorization", Jwt.encode(user))
@@ -26,7 +26,7 @@ defmodule PhMicroblog.Json.MicropostControllerTest do
     end
 
     test "with invalid params", %{user: user, conn: conn} do
-      params = Factory.fields_for(:lorem, content: "")
+      params = Factory.params_for(:lorem, content: "")
 
       json = conn
         |> put_req_header("authorization", Jwt.encode(user))
@@ -58,7 +58,7 @@ defmodule PhMicroblog.Json.MicropostControllerTest do
     end
 
     test "can't delete others' microposts", %{micropost: micropost, conn: conn} do
-      another_user = Factory.create(:archer)
+      another_user = Factory.insert(:archer)
 
       json = conn
         |> put_req_header("authorization", Jwt.encode(another_user))

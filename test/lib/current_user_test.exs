@@ -8,7 +8,7 @@ defmodule PhMicroblog.CurrentUserTest do
     setup %{conn: conn} do
       conn = conn |> put_req_header("accept", "application/json")
       opts = CurrentUser.init(mode: :json)
-      user = Factory.create(:michael)
+      user = Factory.insert(:michael)
 
       {:ok, [conn: conn, opts: opts, user: user]}
     end

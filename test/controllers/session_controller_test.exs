@@ -4,7 +4,7 @@ defmodule PhMicroblog.SessionControllerTest do
   alias PhMicroblog.Factory
 
   setup do
-    user = Factory.create(:michael)
+    user = Factory.insert(:michael)
 
     {:ok, user: user}
   end
