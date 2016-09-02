@@ -42,7 +42,7 @@ defmodule PhMicroblog.Mixfile do
       {:phoenix, "~> 1.2.0"},
       {:phoenix_pubsub, "~> 1.0.0"},
       {:postgrex, ">= 0.0.0"},
-      {:phoenix_ecto, "3.0.0-rc.0"},
+      {:phoenix_ecto, "~> 3.0"},
       {:phoenix_html, "~> 2.6"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.9"},
@@ -52,9 +52,9 @@ defmodule PhMicroblog.Mixfile do
       {:scrivener_ecto, github: "drewolson/scrivener_ecto"},
       {:joken, "~> 1.2"},
 
-      {:faker, "~> 0.6.0", only: :dev},
+      {:faker, "~> 0.7", only: :dev},
 
-      {:floki, "~> 0.8", only: :test},
+      {:floki, "~> 0.10", only: :test},
       {:ex_machina, "~> 1.0", only: :test},
 
       {:exrm, "~> 1.0"}
