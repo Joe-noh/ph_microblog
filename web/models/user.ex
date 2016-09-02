@@ -43,7 +43,7 @@ defmodule PhMicroblog.User do
     |> validate_length(:password, min: 6)
     |> validate_format(:email, @email_format)
     |> validate_confirmation(:password)
-    |> update_change(:email, &String.downcase/1)
+    |> update_change(:email, &downcase_email/1)
     |> unique_constraint(:email)
   end
 
@@ -95,4 +95,7 @@ defmodule PhMicroblog.User do
       changeset
     end
   end
+
+  defp downcase_email(nil),   do: nil
+  defp downcase_email(email), do: String.downcase(email)
 end
