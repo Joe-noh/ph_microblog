@@ -10,6 +10,10 @@ defmodule PhMicroblog.Json.UserView do
   end
 
   def render("user.json", %{user: user}) do
-    %{id: user.id, name: user.name}
+    %{
+      id: user.id,
+      name: user.name,
+      avatar_url: gravatar_url(user)
+     }
   end
 end
