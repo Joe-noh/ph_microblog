@@ -13,7 +13,8 @@ defmodule PhMicroblog.Json.MicropostView do
     %{
       id: micropost.id,
       content: micropost.content,
-      inserted_at: micropost.inserted_at
+      inserted_at: micropost.inserted_at,
+      user: render_one(micropost.user, PhMicroblog.Json.UserView, "user.json")
     }
   end
 end

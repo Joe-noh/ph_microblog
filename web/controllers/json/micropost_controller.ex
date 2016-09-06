@@ -17,7 +17,9 @@ defmodule PhMicroblog.Json.MicropostController do
 
     case Repo.insert(changeset) do
       {:ok, post} ->
-        conn |> put_status(201) |> render("show.json", micropost: post)
+        conn
+        |> put_status(201)
+        |> render("show.json", micropost: Repo.preload(post, :user))
       {:error, changeset} ->
         conn
         |> put_status(422)
