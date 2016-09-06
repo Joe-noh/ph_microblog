@@ -41,6 +41,7 @@ defmodule PhMicroblog.Json.UserControllerTest do
 
       assert json["user"]["id"]   == user.id
       assert json["user"]["name"] == user.name
+      assert json["user"]["avatar_url"] |> is_binary
     end
   end
 
